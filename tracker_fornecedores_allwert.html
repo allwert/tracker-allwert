@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastro de novos fornecedores/Due Diligence - Suprimentos</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark: #13302B;
+    --green-mid: #1e4d45;
+    --green-accent: #458301;
+    --green-light: #90C249;
+    --red: #C00000;
+    --orange: #ED7D31;
+    --yellow: #FFC000;
+    --bg: #f4f6f3;
+    --surface: #ffffff;
+    --surface2: #f0f3ef;
+    --border: #dce3d9;
+    --text: #1a2218;
+    --text-muted: #6b7a66;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--green-dark);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    border-bottom: 3px solid var(--green-accent);
+  }
+  .logo {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: var(--green-accent);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; color: #fff;
+  }
+  .header-nav {
+    display: flex; gap: 4px;
+  }
+  .nav-btn {
+    padding: 7px 18px;
+    border-radius: 6px;
+    border: none;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: transparent;
+    color: rgba(255,255,255,0.65);
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .nav-btn.active { background: var(--green-accent); color: #fff; }
+
+  /* MAIN LAYOUT */
+  main { padding: 28px 32px; max-width: 1600px; margin: 0 auto; }
+
+  /* VIEWS */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* SUMMARY CARDS */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .stat-card.total::before { background: var(--green-dark); }
+  .stat-card.pendente::before { background: var(--yellow); }
+  .stat-card.compliance::before { background: var(--orange); }
+  .stat-card.concluido::before { background: var(--green-accent); }
+  .stat-card.risco::before { background: var(--red); }
+  .stat-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .stat-value {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1;
+  }
+  .stat-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+  /* TOOLBAR */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    gap: 12px;
+  }
+  .toolbar-left { display: flex; gap: 8px; align-items: center; flex: 1; }
+  .search-box {
+    flex: 1;
+    max-width: 320px;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 13px;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-box:focus { border-color: var(--green-accent); }
+  .filter-select {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 13px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+  }
+  .btn-primary {
+    padding: 8px 20px;
+    background: var(--green-accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn-primary:hover { background: #3a7000; }
+  .btn-secondary {
+    padding: 8px 16px;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--green-accent); color: var(--green-accent); }
+
+  /* PROCESS TRACKER TABLE */
+  .tracker-table-wrap {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .tracker-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  .tracker-table thead tr {
+    background: var(--surface2);
+    border-bottom: 2px solid var(--border);
+  }
+  .tracker-table th {
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .tracker-table th.section-docs { border-left: 3px solid var(--orange); padding-left: 10px; }
+  .tracker-table th.section-compliance { border-left: 3px solid var(--yellow); padding-left: 10px; }
+  .tracker-table th.section-sienge { border-left: 3px solid var(--green-accent); padding-left: 10px; }
+  .tracker-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  .tracker-table tbody tr:hover { background: #f8faf7; }
+  .tracker-table td {
+    padding: 10px 12px;
+    vertical-align: middle;
+  }
+  .tracker-table td.section-docs { border-left: 3px solid rgba(237,125,49,0.2); }
+  .tracker-table td.section-compliance { border-left: 3px solid rgba(255,192,0,0.2); }
+  .tracker-table td.section-sienge { border-left: 3px solid rgba(69,131,1,0.2); }
+
+  /* STATUS BADGES */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .badge-green { background: #e8f5e0; color: #2d6b00; }
+  .badge-yellow { background: #fff8e0; color: #8a6500; }
+  .badge-orange { background: #fff0e6; color: #8f4400; }
+  .badge-red { background: #ffe6e6; color: #8f0000; }
+  .badge-gray { background: #f0f0f0; color: #555; }
+  .badge-blue { background: #e6f0ff; color: #1a4a9f; }
+
+  /* CHECKBOX CELLS */
+  .check-cell { text-align: center; }
+  .check-yes { color: var(--green-accent); font-size: 15px; }
+  .check-no { color: var(--text-muted); font-size: 15px; opacity: 0.35; }
+
+  /* FORNECEDOR CELL */
+  .fornecedor-name { font-weight: 600; color: var(--text); font-size: 13px; }
+  .fornecedor-cnpj { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+  .tipo-badge {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+  .tipo-badge.homologacao { background: var(--green-dark); color: #fff; }
+  .tipo-badge.cadastro { background: var(--green-mid); color: #fff; }
+  .tipo-badge.due-diligence { background: #2a4a8a; color: #fff; }
+
+  /* SLA INDICATOR */
+  .sla-value { font-family: var(--mono); font-size: 12px; }
+  .sla-ok { color: var(--green-accent); }
+  .sla-warn { color: var(--orange); }
+  .sla-over { color: var(--red); }
+
+  /* EDIT BUTTON */
+  .btn-edit {
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.1s;
+    font-family: var(--sans);
+  }
+  .btn-edit:hover { border-color: var(--green-accent); color: var(--green-accent); background: #f0fae6; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: 14px;
+    width: 100%;
+    max-width: 760px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  }
+  .modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: var(--surface2);
+    border-radius: 14px 14px 0 0;
+    position: sticky; top: 0; z-index: 1;
+  }
+  .modal-title { font-size: 15px; font-weight: 600; }
+  .modal-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .btn-close {
+    background: none; border: none; cursor: pointer;
+    font-size: 20px; color: var(--text-muted); line-height: 1;
+    padding: 0 4px;
+  }
+  .modal-body { padding: 24px; }
+  .modal-section {
+    margin-bottom: 24px;
+  }
+  .modal-section-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    display: inline-block;
+  }
+  .dot-docs { background: var(--orange); }
+  .dot-compliance { background: var(--yellow); }
+  .dot-sienge { background: var(--green-accent); }
+  .dot-geral { background: var(--green-dark); }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+  .form-grid.cols1 { grid-template-columns: 1fr; }
+  .form-group { display: flex; flex-direction: column; gap: 4px; }
+  .form-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .form-input, .form-select, .form-textarea {
+    padding: 8px 11px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--green-accent);
+  }
+  .form-textarea { resize: vertical; min-height: 70px; }
+  .form-input[readonly] {
+    background: var(--surface2);
+    color: var(--text-muted);
+    cursor: default;
+  }
+
+  .checkbox-group {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .checkbox-item {
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer; font-size: 13px;
+  }
+  .checkbox-item input[type=checkbox] {
+    width: 16px; height: 16px; cursor: pointer;
+    accent-color: var(--green-accent);
+  }
+
+  .modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    background: var(--surface2);
+    border-radius: 0 0 14px 14px;
+    position: sticky; bottom: 0;
+  }
+
+  /* BUYER VIEW */
+  .buyer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .supplier-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.15s;
+    cursor: pointer;
+  }
+  .supplier-card:hover {
+    box-shadow: 0 6px 24px rgba(19,48,43,0.1);
+    transform: translateY(-2px);
+  }
+  .card-top {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-supplier { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .card-cnpj { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+  .card-tipo { margin-top: 6px; }
+  .card-body { padding: 14px 18px; }
+  .card-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    font-size: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-field:last-child { border-bottom: none; }
+  .card-field-label { color: var(--text-muted); }
+  .card-footer {
+    padding: 12px 18px;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-status-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+
+  /* PIPELINE VIEW */
+  .pipeline {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    align-items: start;
+  }
+  .pipeline-col {
+    background: var(--surface);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .pipeline-header {
+    padding: 12px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .pipeline-count {
+    background: rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 11px;
+  }
+  .pipeline-body { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+  .pipeline-card {
+    background: var(--surface2);
+    border-radius: 7px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.1s;
+  }
+  .pipeline-card:hover { border-color: var(--green-accent); background: #f0fae6; }
+  .pipeline-card-name { font-weight: 600; margin-bottom: 3px; }
+  .pipeline-card-sub { font-size: 11px; color: var(--text-muted); }
+  .pipeline-col.col-docs .pipeline-header { background: #fff5ed; color: #8f4400; }
+  .pipeline-col.col-compliance .pipeline-header { background: #fffae0; color: #8a6500; }
+  .pipeline-col.col-sienge .pipeline-header { background: #f0fae6; color: #2d6b00; }
+  .pipeline-col.col-concluido .pipeline-header { background: #e8f5e0; color: #1a4500; }
+  .pipeline-col.col-pendente .pipeline-header { background: #ffe6e6; color: #8f0000; }
+
+  /* PIPELINE CHECKLIST */
+  .pcl-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+  }
+  .pcl-progress-text {
+    font-size: 10px;
+    font-family: var(--mono);
+    color: var(--text-muted);
+  }
+  .pcl-toggle-icon { font-size: 10px; color: var(--text-muted); transition: transform 0.2s; }
+  .pcl-toggle-icon.open { transform: rotate(180deg); }
+  .pcl-mini-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    margin-top: 5px;
+    overflow: hidden;
+  }
+  .pcl-mini-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--green-accent);
+    transition: width 0.3s;
+  }
+  .pcl-list {
+    display: none;
+    margin-top: 8px;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .pcl-list.visible { display: flex; }
+  .pcl-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    color: var(--text);
+    cursor: pointer;
+    padding: 3px 4px;
+    border-radius: 4px;
+    transition: background 0.1s;
+  }
+  .pcl-item:hover { background: rgba(0,0,0,0.04); }
+  .pcl-item input[type=checkbox] {
+    accent-color: var(--green-accent);
+    width: 13px; height: 13px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .pcl-item.checked span { text-decoration: line-through; color: var(--text-muted); }
+  .pcl-group-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    padding: 6px 4px 2px;
+    border-top: 1px dashed var(--border);
+    margin-top: 2px;
+  }
+  .pcl-group-label:first-child { border-top: none; margin-top: 0; padding-top: 2px; }
+
+  /* DATE INPUT */
+  input[type=date] { font-family: var(--sans); }
+
+  /* FORM ADD */
+  .form-from-forms {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .form-from-forms .icon { font-size: 20px; }
+
+  /* EMPTY */
+  .empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-muted);
+  }
+  .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--green-dark);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.25s;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* SECTION HEADERS */
+  .section-header {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 16px;
+  }
+  .section-header h2 { font-size: 16px; font-weight: 600; }
+  .section-header p { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+
+  /* responsive small */
+  @media (max-width: 1200px) {
+    .stats-row { grid-template-columns: repeat(3, 1fr); }
+    .pipeline { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 768px) {
+    main { padding: 16px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .pipeline { grid-template-columns: 1fr 1fr; }
+    header { padding: 0 16px; }
+  }
+
+  .progress-bar-wrap {
+    background: var(--border);
+    border-radius: 20px;
+    height: 5px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    background: var(--green-accent);
+    transition: width 0.4s;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">A</div>
+    All Wert · Cadastro de Novos Fornecedores / Due Diligence — Suprimentos
+  </div>
+  <nav class="header-nav">
+    <button class="nav-btn active" onclick="showView('tracker')">📋 Controle</button>
+    <button class="nav-btn" onclick="showView('pipeline')">🔄 Pipeline</button>
+    <button class="nav-btn" onclick="showView('buyers')">👁 Visão Compradores</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ======= VIEW: TRACKER ======= -->
+  <div class="view active" id="view-tracker">
+
+    <div id="api-config-notice" style="background:#fff8e0;border:1px solid #f0d060;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:12px;color:#7a5c00;display:none;align-items:center;gap:10px;">
+      <span style="font-size:16px;">⚙️</span>
+      <span><strong>Configure a conexão com o Google Sheets:</strong> abra o arquivo HTML em um editor de texto, localize <code>COLE_AQUI_A_URL_DO_SEU_APPS_SCRIPT</code> na linha da constante <code>API_URL</code> e substitua pela URL do seu Apps Script implantado.</span>
+      <button onclick="this.parentElement.style.display='none'" style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:16px;color:#7a5c00;">✕</button>
+    </div>
+
+    <div class="stats-row" id="stats-row"></div>
+
+    <div class="form-from-forms">
+      <span class="icon">📝</span>
+      <span>Respostas do Microsoft Forms são importadas automaticamente. Novos cadastros aparecem aqui com status <strong>"Aguardando Documentos"</strong>. Você pode adicionar manualmente ou atualizar as etapas abaixo.</span>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <input class="search-box" type="text" placeholder="🔍 Buscar fornecedor, CNPJ, solicitante..." oninput="filterTable(this.value)">
+        <select class="filter-select" onchange="filterByStatus(this.value)" id="filter-status">
+          <option value="">Todos os status</option>
+          <option value="AGUARDANDO DOCUMENTOS FORNECEDOR">Aguardando Docs</option>
+          <option value="EM ANÁLISE COMPLIANCE">Em Compliance</option>
+          <option value="AGUARDANDO CADASTRO SIENGE">Aguardando Sienge</option>
+          <option value="CONCLUÍDO">Concluído</option>
+          <option value="PENDÊNCIA">Pendência</option>
+        </select>
+        <select class="filter-select" onchange="filterByTipo(this.value)">
+          <option value="">Todos os tipos</option>
+          <option value="Cadastro">Cadastro</option>
+          <option value="Homologação">Homologação</option>
+          <option value="Due Diligence">Due Diligence</option>
+        </select>
+        <select class="filter-select" onchange="filterBySolicitante(this.value)" id="filter-solicitante">
+          <option value="">Todos os solicitantes</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="openModalNew()">+ Novo Cadastro</button>
+    </div>
+
+    <div class="tracker-table-wrap">
+      <table class="tracker-table" id="tracker-table">
+        <thead>
+          <tr>
+            <th>Fornecedor</th>
+            <th>Tipo</th>
+            <th>Solicitante</th>
+            <th>Dt Solicitação</th>
+            <!-- DOCS -->
+            <th class="section-docs">Sol. Docs</th>
+            <th class="section-docs">Ficha</th>
+            <th class="section-docs">CNPJ</th>
+            <th class="section-docs">Contrato</th>
+            <th class="section-docs">Status Doc</th>
+            <!-- COMPLIANCE -->
+            <th class="section-compliance">Envio Comp.</th>
+            <th class="section-compliance">Retorno Comp.</th>
+            <th class="section-compliance">SLA Comp.</th>
+            <!-- SIENGE -->
+            <th class="section-sienge">Dt Cadastro</th>
+            <th class="section-sienge">Nº Sienge</th>
+            <th class="section-sienge">Status Sienge</th>
+            <th>SLA Total</th>
+            <th>Status Geral</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tracker-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ======= VIEW: PIPELINE ======= -->
+  <div class="view" id="view-pipeline">
+    <div class="section-header">
+      <h2>Pipeline de Cadastro / Homologação</h2>
+      <p id="pipeline-date"></p>
+    </div>
+    <div class="pipeline" id="pipeline-board"></div>
+  </div>
+
+  <!-- ======= VIEW: BUYERS ======= -->
+  <div class="view" id="view-buyers">
+    <div class="section-header">
+      <h2>Visão Compradores</h2>
+      <p>Status resumido por fornecedor</p>
+    </div>
+
+    <div class="toolbar" style="margin-bottom:20px">
+      <div class="toolbar-left">
+        <input class="search-box" type="text" placeholder="🔍 Buscar fornecedor..." oninput="filterBuyers(this.value)">
+        <select class="filter-select" onchange="filterBuyersByStatus(this.value)">
+          <option value="">Todos os status</option>
+          <option value="AGUARDANDO DOCUMENTOS FORNECEDOR">Aguardando Docs</option>
+          <option value="EM ANÁLISE COMPLIANCE">Em Compliance</option>
+          <option value="AGUARDANDO CADASTRO SIENGE">Aguardando Sienge</option>
+          <option value="CONCLUÍDO">Concluído</option>
+          <option value="PENDÊNCIA">Pendência</option>
+        </select>
+        <select class="filter-select" onchange="filterBuyersBySolicitante(this.value)" id="filter-buyer-solicitante">
+          <option value="">Todos os solicitantes</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="buyer-grid" id="buyer-grid"></div>
+  </div>
+
+</main>
+
+<!-- MODAL EDIT/ADD -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-title">Atualizar Cadastro</div>
+        <div class="modal-subtitle" id="modal-subtitle"></div>
+      </div>
+      <button class="btn-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- IDENTIFICAÇÃO -->
+      <div class="modal-section">
+        <div class="modal-section-title">
+          <span class="section-dot dot-geral"></span> Identificação
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Fornecedor</label>
+            <input class="form-input" id="f-fornecedor" type="text" placeholder="Razão Social">
+          </div>
+          <div class="form-group">
+            <label class="form-label">CNPJ</label>
+            <input class="form-input" id="f-cnpj" type="text" placeholder="00.000.000/0000-00">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipo de Cadastro</label>
+            <select class="form-select" id="f-tipo">
+              <option>Cadastro</option>
+              <option>Homologação</option>
+              <option>Due Diligence</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Material ou Serviço</label>
+            <select class="form-select" id="f-material">
+              <option>Serviço</option>
+              <option>Material</option>
+              <option>Material e Serviço</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipo de Serviço / Material</label>
+            <input class="form-input" id="f-tipo-servico" type="text" placeholder="Descrição do serviço ou material">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Valor Previsto (R$)</label>
+            <input class="form-input" id="f-valor" type="text" placeholder="0,00">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Solicitante</label>
+            <input class="form-input" id="f-solicitante" type="text" placeholder="Nome do comprador">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Data Solicitação</label>
+            <input class="form-input form-input-date" id="f-data-sol" type="date">
+          </div>
+        </div>
+      </div>
+
+      <!-- DOCUMENTOS -->
+      <div class="modal-section">
+        <div class="modal-section-title">
+          <span class="section-dot dot-docs"></span> Documentos
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Data Sol. Documentos</label>
+            <input class="form-input" id="f-data-sol-docs" type="date">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status Documentos</label>
+            <select class="form-select" id="f-status-doc">
+              <option>Pendente</option>
+              <option>OK</option>
+              <option>Incompleto</option>
+              <option>Rejeitado</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:0 24px;">
+
+          <div>
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:6px;">Cadastrais</div>
+            <div class="checkbox-group">
+              <label class="checkbox-item"><input type="checkbox" id="f-ficha"> Ficha Cadastral Completa</label>
+              <label class="checkbox-item"><input type="checkbox" id="f-cnpj-doc"> Cartão CNPJ</label>
+              <label class="checkbox-item"><input type="checkbox" id="f-contrato"> Contrato Social</label>
+              <label class="checkbox-item"><input type="checkbox" id="f-certSimplificada"> Certidão Simplificada Atualizada</label>
+              <label class="checkbox-item"><input type="checkbox" id="f-alvara"> Alvará de Funcionamento</label>
+              <label class="checkbox-item"><input type="checkbox" id="f-rgCpfSocios"> Cópia RG e CPF dos Sócios / Representantes</label>
+            </div>
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin:12px 0 6px;">Financeiro</div>
+            <div class="checkbox-group">
+              <label class="checkbox-item"><input type="checkbox" id="f-serasa"> Extrato do Serasa</label>
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:6px;">Certidões</div>
+            <div class="checkbox-group">
+              <label class="checkbox-item"><input type="checkbox" id="f-fgts"> Certidão FGTS</label>
+              <label class="checkbox-item"><input type="checkbox" id="f-cndFederal"> CND Federal</label>
+              <label class="checkbox-item"><input type="checkbox" id="f-cndEstadual"> CND Estadual</label>
+              <label class="checkbox-item"><input type="checkbox" id="f-cndMunicipal"> CND Municipal</label>
+              <label class="checkbox-item"><input type="checkbox" id="f-cndTrt"> CND TRT</label>
+              <label class="checkbox-item"><input type="checkbox" id="f-cndTrabalhista"> CND Ações Trabalhistas</label>
+              <label class="checkbox-item"><input type="checkbox" id="f-cndFalencia"> CND de Falência</label>
+              <label class="checkbox-item"><input type="checkbox" id="f-cndInss"> CND INSS</label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- COMPLIANCE -->
+      <div class="modal-section">
+        <div class="modal-section-title">
+          <span class="section-dot dot-compliance"></span> Status Compliance
+        </div>
+        <div class="form-grid cols3">
+          <div class="form-group">
+            <label class="form-label">Data Envio Compliance</label>
+            <input class="form-input" id="f-data-envio-comp" type="date">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Data Retorno Compliance</label>
+            <input class="form-input" id="f-data-retorno-comp" type="date">
+          </div>
+          <div class="form-group">
+            <label class="form-label">SLA Compliance</label>
+            <select class="form-select" id="f-sla-comp">
+              <option>NO SLA</option>
+              <option>DENTRO DO SLA</option>
+              <option>FORA DO SLA</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIENGE -->
+      <div class="modal-section">
+        <div class="modal-section-title">
+          <span class="section-dot dot-sienge"></span> Cadastro no Sienge
+        </div>
+        <div class="form-grid cols3">
+          <div class="form-group">
+            <label class="form-label">Data Cadastro Sienge</label>
+            <input class="form-input" id="f-data-sienge" type="date">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nº Cadastro Sienge</label>
+            <input class="form-input" id="f-num-sienge" type="text" placeholder="0000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status Cadastro Sienge</label>
+            <select class="form-select" id="f-status-sienge">
+              <option>Pendente</option>
+              <option>OK</option>
+              <option>Em andamento</option>
+              <option>Erro</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATUS GERAL -->
+      <div class="modal-section">
+        <div class="modal-section-title">
+          <span class="section-dot dot-geral"></span> Status Geral
+        </div>
+        <div class="form-grid cols3">
+          <div class="form-group" style="grid-column: span 2">
+            <label class="form-label">Status Geral</label>
+            <select class="form-select" id="f-status-geral">
+              <option>AGUARDANDO DOCUMENTOS FORNECEDOR</option>
+              <option>EM ANÁLISE COMPLIANCE</option>
+              <option>AGUARDANDO CADASTRO SIENGE</option>
+              <option>CONCLUÍDO</option>
+              <option>PENDÊNCIA</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">SLA Total (dias)</label>
+            <input class="form-input" id="f-sla-total" type="text" readonly placeholder="Calculado auto">
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:12px">
+          <label class="form-label">Observação</label>
+          <textarea class="form-textarea" id="f-obs" placeholder="Observações adicionais..."></textarea>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveRecord()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- LOADING OVERLAY -->
+<div id="loading-overlay" style="display:none;position:fixed;inset:0;background:rgba(19,48,43,0.7);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+  <div style="width:40px;height:40px;border:4px solid rgba(255,255,255,0.3);border-top-color:#90C249;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+  <div id="loading-msg" style="color:#fff;font-family:var(--sans);font-size:14px;font-weight:500;letter-spacing:0.04em;">Carregando...</div>
+</div>
+
+<!-- API STATUS BANNER -->
+<div id="api-banner" style="display:none;position:fixed;bottom:70px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:8px;font-size:12px;font-weight:500;font-family:var(--sans);box-shadow:0 4px 16px rgba(0,0,0,0.15);z-index:150;max-width:600px;text-align:center;"></div>
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<script>
+// =============================================================
+// ⚙️  CONFIGURAÇÃO — cole aqui a URL do seu Apps Script
+//     script.google.com → Implantar → Gerenciar implantações
+// =============================================================
+const API_URL = 'https://script.google.com/macros/s/AKfycbwFvE5sZk_crqBQ_SLT3BZ0JT6aPR13GdJIlb8XDWmf5HLehLcsmIlFsO4myY7c4sVQ/exec';
+
+// =============================================================
+// ESTADO GLOBAL
+// =============================================================
+let data      = [];
+let editingId = null;
+let activeFilter = {
+  search: '', status: '', tipo: '', solicitante: '',
+  buyerSearch: '', buyerStatus: '', buyerSolicitante: ''
+};
+
+// =============================================================
+// CAMADA DE API — Google Sheets via Apps Script
+// =============================================================
+const API_READY = API_URL !== 'COLE_AQUI_A_URL_DO_SEU_APPS_SCRIPT';
+
+async function apiFetch(action, record) {
+  if (!API_READY) return { success: true, offline: true };
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ action, record }),
+    redirect: 'follow'
+  });
+  return res.json();
+}
+
+async function apiLoad() {
+  if (!API_READY) return null;
+  const res  = await fetch(API_URL + '?ts=' + Date.now(), { redirect: 'follow' });
+  const json = await res.json();
+  return json.success ? json.data : null;
+}
+
+// =============================================================
+// LOADING OVERLAY
+// =============================================================
+function showLoading(msg) {
+  document.getElementById('loading-overlay').style.display = 'flex';
+  document.getElementById('loading-msg').textContent = msg || 'Carregando...';
+}
+function hideLoading() {
+  document.getElementById('loading-overlay').style.display = 'none';
+}
+
+// =============================================================
+// BANNER DE STATUS DA API
+// =============================================================
+function showBanner(msg, type) {
+  const b = document.getElementById('api-banner');
+  if (!b) return;
+  b.textContent = msg;
+  b.style.background = type === 'error' ? '#ffe6e6' : '#fff8e0';
+  b.style.color      = type === 'error' ? '#8f0000' : '#8a6500';
+  b.style.display    = 'flex';
+}
+
+// =============================================================
+// INIT — carrega dados da planilha ao abrir
+// =============================================================
+async function init() {
+  showLoading('Conectando ao Google Sheets...');
+  try {
+    const remote = await apiLoad();
+    if (remote !== null) {
+      data = remote;
+      data.forEach(r => {
+        DOCS_LIST.forEach(d => {
+          if (typeof r[d.key] === 'string')
+            r[d.key] = r[d.key] === 'true' || r[d.key] === 'TRUE';
+        });
+      });
+      showToast('✅ Conectado ao Google Sheets — ' + data.length + ' registro(s) carregado(s)');
+    } else {
+      // modo offline — seed de demonstração
+      data = [{
+        id: '1', fornecedor: 'Solaris', cnpj: '17.897.555/0001-80',
+        tipo: 'Due Diligence', material: 'Serviço',
+        tipoServico: 'Fornecimento e instalação de toldo',
+        valorPrevisto: '50.000,00', solicitante: 'Vinícius Duarte',
+        dataSolicitacao: '2026-04-24', dataSolDocs: '2026-04-27',
+        ficha: true, cnpjDoc: true, contrato: true, statusDoc: 'OK',
+        dataEnvioComp: '2026-04-28', dataRetornoComp: '2026-04-28',
+        slaComp: 'NO SLA', dataSienge: '2026-04-28', numSienge: '5226',
+        statusSienge: 'OK', statusGeral: 'AGUARDANDO DOCUMENTOS FORNECEDOR', obs: ''
+      }];
+      showBanner('⚠️ Modo demonstração — configure a URL do Apps Script para salvar no Google Sheets.');
+    }
+  } catch (err) {
+    data = [];
+    showBanner('❌ Erro ao conectar ao Google Sheets: ' + err.message, 'error');
+  }
+  hideLoading();
+  renderAll();
+}
+
+function genId() { return Date.now().toString(); }
+
+// Populate solicitante dropdowns from current data
+function populateSolicitanteFilters() {
+  const names = [...new Set(data.map(d => d.solicitante).filter(Boolean))].sort();
+  ['filter-solicitante', 'filter-buyer-solicitante'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const current = sel.value;
+    sel.innerHTML = '<option value="">Todos os solicitantes</option>' +
+      names.map(n => `<option value="${n}" ${n === current ? 'selected' : ''}>${n}</option>`).join('');
+  });
+}
+
+// ============================================================
+// UTILITIES
+// ============================================================
+function fmtDate(d) {
+  if (!d) return '—';
+  const parts = d.split('-');
+  return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
+function daysSince(dateStr) {
+  if (!dateStr) return null;
+  const d = new Date(dateStr);
+  const now = new Date();
+  return Math.floor((now - d) / 86400000);
+}
+function calcSlaTotal(rec) {
+  if (!rec.dataSolicitacao) return null;
+  const start = new Date(rec.dataSolicitacao);
+  const end = rec.statusGeral === 'CONCLUÍDO' && rec.dataSienge
+    ? new Date(rec.dataSienge)
+    : new Date();
+  return Math.floor((end - start) / 86400000);
+}
+
+// ============================================================
+// STATUS BADGE
+// ============================================================
+function statusBadge(s) {
+  const map = {
+    'AGUARDANDO DOCUMENTOS FORNECEDOR': ['badge-orange', '📂'],
+    'EM ANÁLISE COMPLIANCE': ['badge-yellow', '🔍'],
+    'AGUARDANDO CADASTRO SIENGE': ['badge-blue', '⏳'],
+    'CONCLUÍDO': ['badge-green', '✅'],
+    'PENDÊNCIA': ['badge-red', '⚠️'],
+  };
+  const [cls, icon] = map[s] || ['badge-gray', '❓'];
+  const short = {
+    'AGUARDANDO DOCUMENTOS FORNECEDOR': 'Ag. Docs',
+    'EM ANÁLISE COMPLIANCE': 'Compliance',
+    'AGUARDANDO CADASTRO SIENGE': 'Ag. Sienge',
+    'CONCLUÍDO': 'Concluído',
+    'PENDÊNCIA': 'Pendência',
+  };
+  return `<span class="badge ${cls}">${icon} ${short[s] || s}</span>`;
+}
+function docBadge(s) {
+  if (s === 'OK') return '<span class="badge badge-green">✅ OK</span>';
+  if (s === 'Incompleto') return '<span class="badge badge-yellow">⚠️ Incompleto</span>';
+  if (s === 'Rejeitado') return '<span class="badge badge-red">❌ Rejeitado</span>';
+  return '<span class="badge badge-gray">— Pendente</span>';
+}
+function siengeBadge(s) {
+  if (s === 'OK') return '<span class="badge badge-green">✅ OK</span>';
+  if (s === 'Em andamento') return '<span class="badge badge-blue">🔄 Andamento</span>';
+  if (s === 'Erro') return '<span class="badge badge-red">❌ Erro</span>';
+  return '<span class="badge badge-gray">— Pendente</span>';
+}
+function checkCell(val) {
+  return val
+    ? '<span class="check-yes">✓</span>'
+    : '<span class="check-no">✗</span>';
+}
+function slaCell(days) {
+  if (days === null || days === undefined) return '<span style="color:var(--text-muted)">—</span>';
+  const cls = days <= 5 ? 'sla-ok' : days <= 10 ? 'sla-warn' : 'sla-over';
+  return `<span class="sla-value ${cls}">${days}d</span>`;
+}
+function tipoBadge(tipo) {
+  const cls = {
+    'Homologação': 'homologacao',
+    'Cadastro': 'cadastro',
+    'Due Diligence': 'due-diligence'
+  }[tipo] || 'cadastro';
+  return `<span class="tipo-badge ${cls}">${tipo}</span>`;
+}
+
+// ============================================================
+// STATS
+// ============================================================
+function renderStats() {
+  const total = data.length;
+  const pendente = data.filter(d => d.statusGeral === 'AGUARDANDO DOCUMENTOS FORNECEDOR').length;
+  const compliance = data.filter(d => d.statusGeral === 'EM ANÁLISE COMPLIANCE').length;
+  const concluido = data.filter(d => d.statusGeral === 'CONCLUÍDO').length;
+  const risco = data.filter(d => d.statusGeral === 'PENDÊNCIA').length;
+
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-card total">
+      <div class="stat-label">Total de Processos</div>
+      <div class="stat-value">${total}</div>
+      <div class="stat-sub">Cadastros + Homologações</div>
+    </div>
+    <div class="stat-card pendente">
+      <div class="stat-label">Ag. Documentos</div>
+      <div class="stat-value">${pendente}</div>
+      <div class="stat-sub">${total ? Math.round(pendente/total*100) : 0}% do total</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${total ? pendente/total*100 : 0}%;background:var(--yellow)"></div></div>
+    </div>
+    <div class="stat-card compliance">
+      <div class="stat-label">Em Compliance</div>
+      <div class="stat-value">${compliance}</div>
+      <div class="stat-sub">${total ? Math.round(compliance/total*100) : 0}% do total</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${total ? compliance/total*100 : 0}%;background:var(--orange)"></div></div>
+    </div>
+    <div class="stat-card concluido">
+      <div class="stat-label">Concluídos</div>
+      <div class="stat-value">${concluido}</div>
+      <div class="stat-sub">${total ? Math.round(concluido/total*100) : 0}% do total</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${total ? concluido/total*100 : 0}%"></div></div>
+    </div>
+    <div class="stat-card risco">
+      <div class="stat-label">Pendências / Risco</div>
+      <div class="stat-value">${risco}</div>
+      <div class="stat-sub">Requerem ação</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${total ? risco/total*100 : 0}%;background:var(--red)"></div></div>
+    </div>
+  `;
+}
+
+// ============================================================
+// TRACKER TABLE
+// ============================================================
+function filteredData() {
+  return data.filter(d => {
+    const s = activeFilter.search.toLowerCase();
+    const matchSearch = !s ||
+      (d.fornecedor||'').toLowerCase().includes(s) ||
+      (d.cnpj||'').toLowerCase().includes(s) ||
+      (d.solicitante||'').toLowerCase().includes(s) ||
+      (d.tipoServico||'').toLowerCase().includes(s);
+    const matchStatus = !activeFilter.status || d.statusGeral === activeFilter.status;
+    const matchTipo = !activeFilter.tipo || d.tipo === activeFilter.tipo;
+    const matchSol = !activeFilter.solicitante || d.solicitante === activeFilter.solicitante;
+    return matchSearch && matchStatus && matchTipo && matchSol;
+  });
+}
+
+function renderTable() {
+  const rows = filteredData();
+  const tbody = document.getElementById('tracker-body');
+  if (rows.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="18"><div class="empty-state"><div class="icon">📋</div><p>Nenhum registro encontrado.</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.map(rec => {
+    const sla = calcSlaTotal(rec);
+    return `
+    <tr>
+      <td>
+        <div class="fornecedor-name">${rec.fornecedor || '—'}</div>
+        <div class="fornecedor-cnpj">${rec.cnpj || ''}</div>
+      </td>
+      <td>${tipoBadge(rec.tipo)}</td>
+      <td style="font-size:12px">${rec.solicitante || '—'}</td>
+      <td style="font-family:var(--mono);font-size:11px">${fmtDate(rec.dataSolicitacao)}</td>
+      <!-- DOCS -->
+      <td class="section-docs" style="font-family:var(--mono);font-size:11px">${fmtDate(rec.dataSolDocs)}</td>
+      <td class="section-docs check-cell">${checkCell(rec.ficha)}</td>
+      <td class="section-docs check-cell">${checkCell(rec.cnpjDoc)}</td>
+      <td class="section-docs check-cell">${checkCell(rec.contrato)}</td>
+      <td class="section-docs">${docBadge(rec.statusDoc)}</td>
+      <!-- COMPLIANCE -->
+      <td class="section-compliance" style="font-family:var(--mono);font-size:11px">${fmtDate(rec.dataEnvioComp)}</td>
+      <td class="section-compliance" style="font-family:var(--mono);font-size:11px">${fmtDate(rec.dataRetornoComp)}</td>
+      <td class="section-compliance"><span class="badge ${rec.slaComp === 'DENTRO DO SLA' ? 'badge-green' : rec.slaComp === 'FORA DO SLA' ? 'badge-red' : 'badge-gray'}">${rec.slaComp || '—'}</span></td>
+      <!-- SIENGE -->
+      <td class="section-sienge" style="font-family:var(--mono);font-size:11px">${fmtDate(rec.dataSienge)}</td>
+      <td class="section-sienge" style="font-family:var(--mono);font-weight:500;font-size:12px">${rec.numSienge || '—'}</td>
+      <td class="section-sienge">${siengeBadge(rec.statusSienge)}</td>
+      <td>${slaCell(sla)}</td>
+      <td>${statusBadge(rec.statusGeral)}</td>
+      <td><button class="btn-edit" onclick="openModalEdit(${rec.id})">✏️ Editar</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function filterTable(val) {
+  activeFilter.search = val;
+  renderTable();
+}
+function filterByStatus(val) {
+  activeFilter.status = val;
+  renderTable();
+}
+function filterByTipo(val) {
+  activeFilter.tipo = val;
+  renderTable();
+}
+function filterBySolicitante(val) {
+  activeFilter.solicitante = val;
+  renderTable();
+}
+
+// ============================================================
+// DOCUMENT CHECKLIST DEFINITION
+// ============================================================
+const DOCS_LIST = [
+  { group: 'Cadastrais', key: 'ficha',            label: 'Ficha Cadastral Completa' },
+  { group: 'Cadastrais', key: 'cnpjDoc',          label: 'Cartão CNPJ' },
+  { group: 'Cadastrais', key: 'contrato',         label: 'Contrato Social' },
+  { group: 'Cadastrais', key: 'certSimplificada', label: 'Certidão Simplificada Atualizada' },
+  { group: 'Cadastrais', key: 'alvara',           label: 'Alvará de Funcionamento' },
+  { group: 'Cadastrais', key: 'rgCpfSocios',      label: 'Cópia RG e CPF dos Sócios / Representantes' },
+  { group: 'Financeiro', key: 'serasa',           label: 'Extrato do Serasa' },
+  { group: 'Certidões',  key: 'fgts',             label: 'Certidão FGTS' },
+  { group: 'Certidões',  key: 'cndFederal',       label: 'CND Federal' },
+  { group: 'Certidões',  key: 'cndEstadual',      label: 'CND Estadual' },
+  { group: 'Certidões',  key: 'cndMunicipal',     label: 'CND Municipal' },
+  { group: 'Certidões',  key: 'cndTrt',           label: 'CND TRT' },
+  { group: 'Certidões',  key: 'cndTrabalhista',   label: 'CND Ações Trabalhistas' },
+  { group: 'Certidões',  key: 'cndFalencia',      label: 'CND de Falência' },
+  { group: 'Certidões',  key: 'cndInss',          label: 'CND INSS' },
+];
+
+async function toggleDoc(recId, key, e) {
+  e.stopPropagation();
+  const idx = data.findIndex(d => String(d.id) === String(recId));
+  if (idx === -1) return;
+
+  // Atualiza local imediatamente (UX responsiva)
+  data[idx][key] = document.getElementById(`doc-${recId}-${key}`).checked;
+
+  // Atualiza barra de progresso na hora
+  const total = DOCS_LIST.length;
+  const done  = DOCS_LIST.filter(d => data[idx][d.key]).length;
+  const bar   = document.getElementById(`pcl-bar-${recId}`);
+  const txt   = document.getElementById(`pcl-txt-${recId}`);
+  if (bar) bar.style.width = `${(done/total)*100}%`;
+  if (txt) txt.textContent = `${done}/${total} docs`;
+  const item = document.getElementById(`doc-${recId}-${key}`)?.closest('.pcl-item');
+  if (item) item.classList.toggle('checked', data[idx][key]);
+
+  // Persiste no Google Sheets em background
+  try {
+    await apiFetch('update', data[idx]);
+  } catch (err) {
+    console.error('Erro ao salvar documento:', err);
+    showToast('❌ Erro ao salvar no Sheets. Verifique a conexão.');
+  }
+}
+
+function togglePclList(recId) {
+  const list = document.getElementById(`pcl-list-${recId}`);
+  const icon = document.getElementById(`pcl-icon-${recId}`);
+  if (!list) return;
+  list.classList.toggle('visible');
+  icon.classList.toggle('open');
+}
+
+// ============================================================
+// PIPELINE
+// ============================================================
+function renderPipeline() {
+  const now = new Date();
+  document.getElementById('pipeline-date').textContent = `Atualizado em ${now.toLocaleDateString('pt-BR')} ${now.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'})}`;
+
+  const cols = [
+    { key: 'AGUARDANDO DOCUMENTOS FORNECEDOR', label: 'Ag. Documentos', cls: 'col-docs', icon: '📂' },
+    { key: 'EM ANÁLISE COMPLIANCE', label: 'Em Compliance', cls: 'col-compliance', icon: '🔍' },
+    { key: 'AGUARDANDO CADASTRO SIENGE', label: 'Ag. Sienge', cls: 'col-sienge', icon: '⏳' },
+    { key: 'CONCLUÍDO', label: 'Concluído', cls: 'col-concluido', icon: '✅' },
+    { key: 'PENDÊNCIA', label: 'Pendência', cls: 'col-pendente', icon: '⚠️' },
+  ];
+
+  document.getElementById('pipeline-board').innerHTML = cols.map(col => {
+    const recs = data.filter(d => d.statusGeral === col.key);
+    const cards = recs.length === 0
+      ? '<div style="padding:12px;text-align:center;font-size:12px;color:var(--text-muted)">Nenhum</div>'
+      : recs.map(r => {
+          const totalDocs = DOCS_LIST.length;
+          const doneDocs = DOCS_LIST.filter(d => r[d.key]).length;
+          const pct = Math.round((doneDocs / totalDocs) * 100);
+          const barColor = pct === 100 ? 'var(--green-accent)' : pct >= 60 ? 'var(--yellow)' : 'var(--orange)';
+
+          // Group docs
+          const groups = [...new Set(DOCS_LIST.map(d => d.group))];
+          const checklistHTML = groups.map(g => {
+            const items = DOCS_LIST.filter(d => d.group === g);
+            return `<div class="pcl-group-label">${g}</div>` + items.map(d => `
+              <label class="pcl-item ${r[d.key] ? 'checked' : ''}" onclick="event.stopPropagation()">
+                <input type="checkbox" id="doc-${r.id}-${d.key}"
+                  ${r[d.key] ? 'checked' : ''}
+                  onchange="toggleDoc(${r.id}, '${d.key}', event)">
+                <span>${d.label}</span>
+              </label>`).join('');
+          }).join('');
+
+          return `
+            <div class="pipeline-card">
+              <div onclick="openModalEdit(${r.id})">
+                <div class="pipeline-card-name">${r.fornecedor}</div>
+                <div class="pipeline-card-sub">${r.tipo} · ${r.tipoServico || '—'}</div>
+                <div style="margin-top:6px">${tipoBadge(r.tipo)}</div>
+              </div>
+              <div class="pcl-toggle" onclick="togglePclList(${r.id})">
+                <span class="pcl-progress-text" id="pcl-txt-${r.id}">${doneDocs}/${totalDocs} docs</span>
+                <span class="pcl-toggle-icon" id="pcl-icon-${r.id}">▼</span>
+              </div>
+              <div class="pcl-mini-bar">
+                <div class="pcl-mini-bar-fill" id="pcl-bar-${r.id}" style="width:${pct}%;background:${barColor}"></div>
+              </div>
+              <div class="pcl-list" id="pcl-list-${r.id}">
+                ${checklistHTML}
+              </div>
+            </div>`;
+        }).join('');
+    return `
+      <div class="pipeline-col ${col.cls}">
+        <div class="pipeline-header">
+          <span>${col.icon} ${col.label}</span>
+          <span class="pipeline-count">${recs.length}</span>
+        </div>
+        <div class="pipeline-body">${cards}</div>
+      </div>`;
+  }).join('');
+}
+
+// ============================================================
+// BUYERS VIEW
+// ============================================================
+function filteredBuyers() {
+  return data.filter(d => {
+    const s = activeFilter.buyerSearch.toLowerCase();
+    const match = !s || (d.fornecedor||'').toLowerCase().includes(s) || (d.tipoServico||'').toLowerCase().includes(s);
+    const matchS = !activeFilter.buyerStatus || d.statusGeral === activeFilter.buyerStatus;
+    const matchSol = !activeFilter.buyerSolicitante || d.solicitante === activeFilter.buyerSolicitante;
+    return match && matchS && matchSol;
+  });
+}
+
+function renderBuyers() {
+  const rows = filteredBuyers();
+  const grid = document.getElementById('buyer-grid');
+  if (rows.length === 0) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="icon">🏢</div><p>Nenhum fornecedor encontrado.</p></div>`;
+    return;
+  }
+  grid.innerHTML = rows.map(rec => {
+    const sla = calcSlaTotal(rec);
+    const docsCheck = [rec.ficha, rec.cnpjDoc, rec.contrato].filter(Boolean).length;
+    return `
+      <div class="supplier-card" onclick="openModalEdit(${rec.id})">
+        <div class="card-top">
+          <div class="card-supplier">${rec.fornecedor || '—'}</div>
+          <div class="card-cnpj">${rec.cnpj || ''}</div>
+          <div class="card-tipo">${tipoBadge(rec.tipo)}</div>
+        </div>
+        <div class="card-body">
+          <div class="card-field">
+            <span class="card-field-label">Material/Serviço</span>
+            <span style="font-size:12px;font-weight:500;max-width:180px;text-align:right">${rec.tipoServico || '—'}</span>
+          </div>
+          <div class="card-field">
+            <span class="card-field-label">Documentos</span>
+            <span>${docBadge(rec.statusDoc)} <small style="color:var(--text-muted)">${docsCheck}/3</small></span>
+          </div>
+          <div class="card-field">
+            <span class="card-field-label">Nº Sienge</span>
+            <span style="font-family:var(--mono);font-size:12px;font-weight:500">${rec.numSienge || '—'}</span>
+          </div>
+          <div class="card-field">
+            <span class="card-field-label">SLA Total</span>
+            <span>${slaCell(sla)}</span>
+          </div>
+          ${rec.obs ? `<div class="card-field" style="flex-direction:column;align-items:flex-start;gap:2px">
+            <span class="card-field-label">Obs</span>
+            <span style="font-size:11px;color:var(--text-muted)">${rec.obs}</span>
+          </div>` : ''}
+        </div>
+        <div class="card-footer">
+          <span class="card-status-label">Status</span>
+          ${statusBadge(rec.statusGeral)}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function filterBuyers(val) {
+  activeFilter.buyerSearch = val;
+  renderBuyers();
+}
+function filterBuyersByStatus(val) {
+  activeFilter.buyerStatus = val;
+  renderBuyers();
+}
+function filterBuyersBySolicitante(val) {
+  activeFilter.buyerSolicitante = val;
+  renderBuyers();
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+function openModalNew() {
+  editingId = null;
+  document.getElementById('modal-title').textContent = 'Novo Cadastro / Homologação';
+  document.getElementById('modal-subtitle').textContent = 'Preencha os dados do fornecedor';
+  clearForm();
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function openModalEdit(id) {
+  editingId = id;
+  const rec = data.find(d => d.id === id);
+  if (!rec) return;
+  document.getElementById('modal-title').textContent = `Atualizar: ${rec.fornecedor}`;
+  document.getElementById('modal-subtitle').textContent = rec.cnpj || '';
+  fillForm(rec);
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+function clearForm() {
+  ['f-fornecedor','f-cnpj','f-tipo-servico','f-valorPrevisto','f-solicitante',
+   'f-data-sol','f-data-sol-docs','f-data-envio-comp','f-data-retorno-comp',
+   'f-data-sienge','f-num-sienge','f-obs','f-sla-total'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  ['f-ficha','f-cnpj-doc','f-contrato','f-certSimplificada','f-alvara','f-rgCpfSocios',
+   'f-serasa','f-fgts','f-cndFederal','f-cndEstadual','f-cndMunicipal','f-cndTrt',
+   'f-cndTrabalhista','f-cndFalencia','f-cndInss'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.checked = false;
+  });
+  document.getElementById('f-tipo').value = 'Cadastro';
+  document.getElementById('f-material').value = 'Serviço';
+  document.getElementById('f-status-doc').value = 'Pendente';
+  document.getElementById('f-sla-comp').value = 'NO SLA';
+  document.getElementById('f-status-sienge').value = 'Pendente';
+  document.getElementById('f-status-geral').value = 'AGUARDANDO DOCUMENTOS FORNECEDOR';
+}
+
+function fillForm(rec) {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+  const chk = (id, val) => { const el = document.getElementById(id); if (el) el.checked = !!val; };
+  set('f-fornecedor', rec.fornecedor);
+  set('f-cnpj', rec.cnpj);
+  set('f-tipo', rec.tipo);
+  set('f-material', rec.material);
+  set('f-tipo-servico', rec.tipoServico);
+  set('f-valor', rec.valorPrevisto);
+  set('f-solicitante', rec.solicitante);
+  set('f-data-sol', rec.dataSolicitacao);
+  set('f-data-sol-docs', rec.dataSolDocs);
+  set('f-status-doc', rec.statusDoc);
+  chk('f-ficha', rec.ficha);
+  chk('f-cnpj-doc', rec.cnpjDoc);
+  chk('f-contrato', rec.contrato);
+  chk('f-certSimplificada', rec.certSimplificada);
+  chk('f-alvara', rec.alvara);
+  chk('f-rgCpfSocios', rec.rgCpfSocios);
+  chk('f-serasa', rec.serasa);
+  chk('f-fgts', rec.fgts);
+  chk('f-cndFederal', rec.cndFederal);
+  chk('f-cndEstadual', rec.cndEstadual);
+  chk('f-cndMunicipal', rec.cndMunicipal);
+  chk('f-cndTrt', rec.cndTrt);
+  chk('f-cndTrabalhista', rec.cndTrabalhista);
+  chk('f-cndFalencia', rec.cndFalencia);
+  chk('f-cndInss', rec.cndInss);
+  set('f-data-envio-comp', rec.dataEnvioComp);
+  set('f-data-retorno-comp', rec.dataRetornoComp);
+  set('f-sla-comp', rec.slaComp);
+  set('f-data-sienge', rec.dataSienge);
+  set('f-num-sienge', rec.numSienge);
+  set('f-status-sienge', rec.statusSienge);
+  set('f-status-geral', rec.statusGeral);
+  set('f-obs', rec.obs);
+  // Show SLA
+  const sla = calcSlaTotal(rec);
+  document.getElementById('f-sla-total').value = sla !== null ? `${sla} dias` : '';
+}
+
+function readForm() {
+  const g = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
+  const c = (id) => { const el = document.getElementById(id); return el ? el.checked : false; };
+  const rec = {
+    fornecedor: g('f-fornecedor'),
+    cnpj: g('f-cnpj'),
+    tipo: g('f-tipo'),
+    material: g('f-material'),
+    tipoServico: g('f-tipo-servico'),
+    valorPrevisto: g('f-valor'),
+    solicitante: g('f-solicitante'),
+    dataSolicitacao: g('f-data-sol'),
+    dataSolDocs: g('f-data-sol-docs'),
+    statusDoc: g('f-status-doc'),
+    ficha: c('f-ficha'),
+    cnpjDoc: c('f-cnpj-doc'),
+    contrato: c('f-contrato'),
+    certSimplificada: c('f-certSimplificada'),
+    alvara: c('f-alvara'),
+    rgCpfSocios: c('f-rgCpfSocios'),
+    serasa: c('f-serasa'),
+    fgts: c('f-fgts'),
+    cndFederal: c('f-cndFederal'),
+    cndEstadual: c('f-cndEstadual'),
+    cndMunicipal: c('f-cndMunicipal'),
+    cndTrt: c('f-cndTrt'),
+    cndTrabalhista: c('f-cndTrabalhista'),
+    cndFalencia: c('f-cndFalencia'),
+    cndInss: c('f-cndInss'),
+    dataEnvioComp: g('f-data-envio-comp'),
+    dataRetornoComp: g('f-data-retorno-comp'),
+    slaComp: g('f-sla-comp'),
+    dataSienge: g('f-data-sienge'),
+    numSienge: g('f-num-sienge'),
+    statusSienge: g('f-status-sienge'),
+    statusGeral: g('f-status-geral'),
+    obs: g('f-obs'),
+  };
+  rec.slaTotal = calcSlaTotal(rec) || '';
+  return rec;
+}
+
+async function saveRecord() {
+  const rec = readForm();
+  if (!rec.fornecedor.trim()) { showToast('⚠️ Preencha o nome do fornecedor'); return; }
+
+  const btn = document.querySelector('.modal-footer .btn-primary');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Salvando...'; }
+
+  try {
+    if (editingId !== null) {
+      // UPDATE
+      const idx = data.findIndex(d => String(d.id) === String(editingId));
+      if (idx !== -1) {
+        data[idx] = { ...data[idx], ...rec };
+        await apiFetch('update', data[idx]);
+      }
+      showToast('✅ Registro atualizado com sucesso!');
+    } else {
+      // CREATE
+      rec.id = genId();
+      const result = await apiFetch('create', rec);
+      if (result.id) rec.id = result.id; // usa o ID retornado pelo Sheets
+      data.push(rec);
+      showToast('✅ Novo fornecedor cadastrado!');
+    }
+    closeModal();
+    renderAll();
+  } catch (err) {
+    showToast('❌ Erro ao salvar. Verifique a conexão com o Google Sheets.');
+    console.error(err);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '💾 Salvar'; }
+  }
+}
+
+// ============================================================
+// VIEWS
+// ============================================================
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (name === 'pipeline') renderPipeline();
+  if (name === 'buyers') renderBuyers();
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ============================================================
+// RENDER ALL
+// ============================================================
+function renderAll() {
+  renderStats();
+  renderTable();
+  populateSolicitanteFilters();
+}
+
+// Close modal on overlay click
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// Set today's date
+document.getElementById('pipeline-date').textContent = new Date().toLocaleDateString('pt-BR');
+
+// Mostra aviso de configuração apenas se a URL não foi preenchida
+if (!API_READY) {
+  document.getElementById('api-config-notice').style.display = 'flex';
+}
+
+// INIT — carrega dados do Google Sheets
+init();
+</script>
+</body>
+</html>
