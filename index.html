@@ -1004,6 +1004,7 @@
 //     script.google.com → Implantar → Gerenciar implantações
 // =============================================================
 const API_URL = 'https://script.google.com/macros/s/AKfycbwFvE5sZk_crqBQ_SLT3BZ0JT6aPR13GdJIlb8XDWmf5HLehLcsmIlFsO4myY7c4sVQ/exec';
+const API_KEY = 'allwert2026';
 
 // =============================================================
 // ESTADO GLOBAL
@@ -1022,10 +1023,10 @@ const API_READY = API_URL !== 'COLE_AQUI_A_URL_DO_SEU_APPS_SCRIPT';
 
 async function apiFetch(action, record) {
   if (!API_READY) return { success: true, offline: true };
-  const res = await fetch(API_URL, {
+  const res = await fetch(API_URL + '?key=' + API_KEY, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify({ action, record }),
+    body: JSON.stringify({ action, record, key: API_KEY }),
     redirect: 'follow'
   });
   return res.json();
@@ -1033,7 +1034,7 @@ async function apiFetch(action, record) {
 
 async function apiLoad() {
   if (!API_READY) return null;
-  const res  = await fetch(API_URL + '?ts=' + Date.now(), { redirect: 'follow' });
+  const res  = await fetch(API_URL + '?key=' + API_KEY + '&ts=' + Date.now(), { redirect: 'follow' });
   const json = await res.json();
   return json.success ? json.data : null;
 }
