@@ -52,14 +52,16 @@
   .view { display: none; }
   .view.active { display: block; }
 
-  .stats-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; margin-bottom: 20px; }
+  /* ✅ ALTERAÇÃO 2: 6 colunas nos KPI boxes */
+  .stats-row { display: grid; grid-template-columns: repeat(6,1fr); gap: 12px; margin-bottom: 20px; }
   .stat-card { background: var(--surface); border-radius: 10px; padding: 16px 18px; border: 1px solid var(--border); position: relative; overflow: hidden; }
   .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-  .stat-card.total::before { background: var(--green-dark); }
-  .stat-card.pendente::before { background: var(--yellow); }
+  .stat-card.total::before      { background: var(--green-dark); }
+  .stat-card.pendente::before   { background: var(--yellow); }
   .stat-card.compliance::before { background: var(--orange); }
-  .stat-card.concluido::before { background: var(--green-accent); }
-  .stat-card.risco::before { background: var(--red); }
+  .stat-card.aprovado::before   { background: var(--green-accent); }
+  .stat-card.reprovado::before  { background: var(--red); }
+  .stat-card.sienge::before     { background: #1a4a9f; }
   .stat-label { font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
   .stat-value { font-family: var(--mono); font-size: 26px; font-weight: 500; line-height: 1; }
   .stat-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
@@ -91,13 +93,14 @@
   .tracker-table td.ss { border-left: 3px solid rgba(69,131,1,0.15); }
 
   .badge { display: inline-flex; align-items: center; gap: 3px; padding: 2px 8px; border-radius: 20px; font-size: 10.5px; font-weight: 500; white-space: nowrap; }
-  .badge-green { background: #e8f5e0; color: #2d6b00; }
+  .badge-green  { background: #e8f5e0; color: #2d6b00; }
   .badge-yellow { background: #fff8e0; color: #8a6500; }
   .badge-orange { background: #fff0e6; color: #8f4400; }
-  .badge-red { background: #ffe6e6; color: #8f0000; }
-  .badge-gray { background: #f0f0f0; color: #555; }
-  .badge-blue { background: #e6f0ff; color: #1a4a9f; }
-  .badge-teal { background: #e0f5f5; color: #006060; }
+  .badge-red    { background: #ffe6e6; color: #8f0000; }
+  .badge-gray   { background: #f0f0f0; color: #555; }
+  .badge-blue   { background: #e6f0ff; color: #1a4a9f; }
+  .badge-teal   { background: #e0f5f5; color: #006060; }
+  .badge-purple { background: #f3e8ff; color: #5c1a9f; }
 
   .check-cell { text-align: center; }
   .check-yes { color: var(--green-accent); }
@@ -105,11 +108,11 @@
   .fornecedor-name { font-weight: 600; font-size: 12.5px; }
   .fornecedor-cnpj { font-family: var(--mono); font-size: 10.5px; color: var(--text-muted); }
   .tipo-badge { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
-  .tipo-badge.homologacao { background: var(--green-dark); color: #fff; }
-  .tipo-badge.cadastro { background: var(--green-mid); color: #fff; }
-  .tipo-badge.due-diligence { background: #2a4a8a; color: #fff; }
+  .tipo-badge.homologacao  { background: var(--green-dark); color: #fff; }
+  .tipo-badge.cadastro     { background: var(--green-mid); color: #fff; }
+  .tipo-badge.due-diligence{ background: #2a4a8a; color: #fff; }
   .sla-value { font-family: var(--mono); font-size: 11px; }
-  .sla-ok { color: var(--green-accent); }
+  .sla-ok   { color: var(--green-accent); }
   .sla-warn { color: var(--orange); }
   .sla-over { color: var(--red); }
   .btn-edit { padding: 3px 9px; background: transparent; border: 1px solid var(--border); border-radius: 5px; font-size: 10.5px; cursor: pointer; color: var(--text-muted); font-family: var(--sans); }
@@ -126,10 +129,10 @@
   .modal-section { margin-bottom: 20px; }
   .modal-section-title { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 5px; }
   .section-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
-  .dot-docs { background: var(--orange); }
+  .dot-docs       { background: var(--orange); }
   .dot-compliance { background: var(--yellow); }
-  .dot-sienge { background: var(--green-accent); }
-  .dot-geral { background: var(--green-dark); }
+  .dot-sienge     { background: var(--green-accent); }
+  .dot-geral      { background: var(--green-dark); }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .form-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
   .form-grid.cols1 { grid-template-columns: 1fr; }
@@ -153,7 +156,6 @@
   .file-name { font-size: 11px; color: var(--green-accent); margin-top: 4px; font-family: var(--mono); }
   .upload-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 12px; }
 
-  /* PIPELINE */
   .pipeline-toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
   .pipeline { display: grid; gap: 12px; align-items: start; }
   .pipeline-col { background: var(--surface); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
@@ -164,11 +166,13 @@
   .pipeline-card:hover { border-color: var(--green-accent); background: #f0fae6; }
   .pipeline-card-name { font-weight: 600; margin-bottom: 2px; }
   .pipeline-card-sub { font-size: 10.5px; color: var(--text-muted); }
-  .pipeline-col.col-docs .pipeline-header { background: #fff5ed; color: #8f4400; }
-  .pipeline-col.col-compliance .pipeline-header { background: #fffae0; color: #8a6500; }
-  .pipeline-col.col-sienge .pipeline-header { background: #f0fae6; color: #2d6b00; }
-  .pipeline-col.col-concluido .pipeline-header { background: #e8f5e0; color: #1a4500; }
-  .pipeline-col.col-pendente .pipeline-header { background: #ffe6e6; color: #8f0000; }
+  .pipeline-col.col-docs        .pipeline-header { background: #fff5ed; color: #8f4400; }
+  .pipeline-col.col-compliance  .pipeline-header { background: #fffae0; color: #8a6500; }
+  .pipeline-col.col-sienge      .pipeline-header { background: #f0fae6; color: #2d6b00; }
+  .pipeline-col.col-concluido   .pipeline-header { background: #e8f5e0; color: #1a4500; }
+  .pipeline-col.col-pendente    .pipeline-header { background: #ffe6e6; color: #8f0000; }
+  .pipeline-col.col-aprovado    .pipeline-header { background: #e6f0ff; color: #1a4a9f; }
+  .pipeline-col.col-reprovado   .pipeline-header { background: #f3e8ff; color: #5c1a9f; }
 
   .pcl-toggle { display: flex; align-items: center; justify-content: space-between; margin-top: 7px; padding-top: 7px; border-top: 1px solid var(--border); cursor: pointer; user-select: none; }
   .pcl-progress-text { font-size: 10px; font-family: var(--mono); color: var(--text-muted); }
@@ -199,7 +203,6 @@
   .empty-state { text-align: center; padding: 44px; color: var(--text-muted); }
   .empty-state .icon { font-size: 36px; margin-bottom: 10px; }
 
-  /* MULTI-SELECT */
   .multi-select-wrap { position: relative; }
   .multi-select-btn {
     padding: 8px 12px; border: 1px solid var(--border); border-radius: 7px;
@@ -214,17 +217,14 @@
     display: none; position: absolute; top: calc(100% + 4px); left: 0;
     background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.12); z-index: 50; min-width: 240px;
-    padding: 6px 0; max-height: 280px; overflow-y: auto;
+    padding: 6px 0; max-height: 320px; overflow-y: auto;
   }
   .multi-select-dropdown.open { display: block; }
-  .ms-item {
-    display: flex; align-items: center; gap: 8px; padding: 7px 14px;
-    cursor: pointer; font-size: 12.5px; transition: background 0.1s;
-  }
+  .ms-item { display: flex; align-items: center; gap: 8px; padding: 7px 14px; cursor: pointer; font-size: 12.5px; transition: background 0.1s; }
   .ms-item:hover { background: var(--surface2); }
   .ms-item input[type=checkbox] { accent-color: var(--green-accent); width: 14px; height: 14px; cursor: pointer; flex-shrink: 0; }
 
-  @media (max-width: 1100px) {
+  @media (max-width: 1200px) {
     .stats-row { grid-template-columns: repeat(3,1fr); }
     .pipeline { grid-template-columns: repeat(3,1fr) !important; }
   }
@@ -285,7 +285,6 @@
         <label class="form-label">Valor Previsto (R$)</label>
         <input class="form-input" id="c-valor" type="text" placeholder="0,00">
       </div>
-      <!-- ✅ ALTERAÇÃO 2: Solicitante agora é lista suspensa predeterminada -->
       <div class="form-group">
         <label class="form-label">Solicitante</label>
         <select class="form-select" id="c-solicitante">
@@ -358,8 +357,6 @@
   <div class="toolbar">
     <div class="toolbar-left">
       <input class="search-box" type="text" placeholder="🔍 Buscar fornecedor, CNPJ..." oninput="filterTable(this.value)">
-
-      <!-- MULTI-SELECT STATUS -->
       <div class="multi-select-wrap" id="status-wrap">
         <button class="multi-select-btn" onclick="toggleMultiSelect('status-dropdown')" type="button">
           <span id="status-label">Todos os status</span> <span class="ms-arrow">▾</span>
@@ -370,11 +367,13 @@
           <label class="ms-item"><input type="checkbox" value="AGUARDANDO RETORNO DO FORNECEDOR" onchange="msFilter('status')"> <span>Ag. Retorno do Fornecedor</span></label>
           <label class="ms-item"><input type="checkbox" value="EM ANÁLISE COMPLIANCE" onchange="msFilter('status')"> <span>Em Análise Compliance</span></label>
           <label class="ms-item"><input type="checkbox" value="AGUARDANDO CADASTRO SIENGE" onchange="msFilter('status')"> <span>Ag. Cadastro Sienge</span></label>
+          <label class="ms-item"><input type="checkbox" value="APROVADO" onchange="msFilter('status')"> <span>Aprovado</span></label>
+          <label class="ms-item"><input type="checkbox" value="REPROVADO" onchange="msFilter('status')"> <span>Reprovado</span></label>
+          <label class="ms-item"><input type="checkbox" value="CADASTRADO NO SIENGE" onchange="msFilter('status')"> <span>Cadastrado no Sienge</span></label>
           <label class="ms-item"><input type="checkbox" value="CONCLUÍDO" onchange="msFilter('status')"> <span>Concluído</span></label>
           <label class="ms-item"><input type="checkbox" value="PENDÊNCIA" onchange="msFilter('status')"> <span>Pendência</span></label>
         </div>
       </div>
-
       <select class="filter-select" onchange="filterByTipo(this.value)">
         <option value="">Todos os tipos</option>
         <option>Cadastro</option>
@@ -390,25 +389,12 @@
     <table class="tracker-table" id="tracker-table">
       <thead>
         <tr>
-          <th>Fornecedor</th>
-          <th>Tipo</th>
-          <th>Solicitante</th>
-          <th>Dt Solicitação</th>
-          <th class="sd">Sol. Docs</th>
-          <th class="sd">Ficha</th>
-          <th class="sd">CNPJ</th>
-          <th class="sd">Contrato</th>
-          <th class="sd">Dt Retorno Forn.</th>
-          <th class="sd">Status Doc</th>
-          <th class="sc">Envio Comp.</th>
-          <th class="sc">Retorno Comp.</th>
-          <th class="sc">SLA Comp.</th>
-          <th class="ss">Dt Cadastro</th>
-          <th class="ss">Nº Sienge</th>
-          <th class="ss">Status Sienge</th>
-          <th>SLA Total</th>
-          <th>Status Geral</th>
-          <th></th>
+          <th>Fornecedor</th><th>Tipo</th><th>Solicitante</th><th>Dt Solicitação</th>
+          <th class="sd">Sol. Docs</th><th class="sd">Ficha</th><th class="sd">CNPJ</th>
+          <th class="sd">Contrato</th><th class="sd">Dt Retorno Forn.</th><th class="sd">Status Doc</th>
+          <th class="sc">Envio Comp.</th><th class="sc">Retorno Comp.</th><th class="sc">SLA Comp.</th>
+          <th class="ss">Dt Cadastro</th><th class="ss">Nº Sienge</th><th class="ss">Status Sienge</th>
+          <th>SLA Total</th><th>Status Geral</th><th></th>
         </tr>
       </thead>
       <tbody id="tracker-body"></tbody>
@@ -422,11 +408,8 @@
     <h2>Pipeline de Cadastro / Homologação</h2>
     <p id="pipeline-date"></p>
   </div>
-
-  <!-- ✅ ALTERAÇÃO 3: Filtros no pipeline (mesmos do Controle) -->
   <div class="pipeline-toolbar">
     <input class="search-box" type="text" placeholder="🔍 Buscar fornecedor..." oninput="filterPipeline('search', this.value)" style="max-width:220px">
-
     <div class="multi-select-wrap" id="p-status-wrap">
       <button class="multi-select-btn" onclick="toggleMultiSelect('p-status-dropdown')" type="button">
         <span id="p-status-label">Todos os status</span> <span class="ms-arrow">▾</span>
@@ -437,23 +420,23 @@
         <label class="ms-item"><input type="checkbox" value="AGUARDANDO RETORNO DO FORNECEDOR" onchange="pMsFilter()"> <span>Ag. Retorno do Fornecedor</span></label>
         <label class="ms-item"><input type="checkbox" value="EM ANÁLISE COMPLIANCE" onchange="pMsFilter()"> <span>Em Análise Compliance</span></label>
         <label class="ms-item"><input type="checkbox" value="AGUARDANDO CADASTRO SIENGE" onchange="pMsFilter()"> <span>Ag. Cadastro Sienge</span></label>
+        <label class="ms-item"><input type="checkbox" value="APROVADO" onchange="pMsFilter()"> <span>Aprovado</span></label>
+        <label class="ms-item"><input type="checkbox" value="REPROVADO" onchange="pMsFilter()"> <span>Reprovado</span></label>
+        <label class="ms-item"><input type="checkbox" value="CADASTRADO NO SIENGE" onchange="pMsFilter()"> <span>Cadastrado no Sienge</span></label>
         <label class="ms-item"><input type="checkbox" value="CONCLUÍDO" onchange="pMsFilter()"> <span>Concluído</span></label>
         <label class="ms-item"><input type="checkbox" value="PENDÊNCIA" onchange="pMsFilter()"> <span>Pendência</span></label>
       </div>
     </div>
-
     <select class="filter-select" onchange="filterPipeline('tipo', this.value)">
       <option value="">Todos os tipos</option>
       <option>Cadastro</option>
       <option>Homologação</option>
       <option>Due Diligence</option>
     </select>
-
     <select class="filter-select" id="p-filter-solicitante" onchange="filterPipeline('solicitante', this.value)">
       <option value="">Todos os solicitantes</option>
     </select>
   </div>
-
   <div class="pipeline" id="pipeline-board"></div>
 </div>
 
@@ -497,11 +480,8 @@
           <div class="form-group"><label class="form-label">Data Retorno Fornecedor</label><input class="form-input" id="f-dataRetornoForn" type="date"></div>
           <div class="form-group"><label class="form-label">Status Documentos</label>
             <select class="form-select" id="f-statusDoc">
-              <option>Pendente</option>
-              <option>Aguardando Retorno do Fornecedor</option>
-              <option>OK</option>
-              <option>Incompleto</option>
-              <option>Rejeitado</option>
+              <option>Pendente</option><option>Aguardando Retorno do Fornecedor</option>
+              <option>OK</option><option>Incompleto</option><option>Rejeitado</option>
             </select>
           </div>
         </div>
@@ -564,14 +544,16 @@
         <div class="form-grid cols3">
           <div class="form-group" style="grid-column:span 2">
             <label class="form-label">Status Geral</label>
+            <!-- ✅ ALTERAÇÃO 1: Adicionados APROVADO, REPROVADO e CADASTRADO NO SIENGE -->
             <select class="form-select" id="f-statusGeral">
               <option>AGUARDANDO DOCUMENTOS FORNECEDOR</option>
               <option>AGUARDANDO RETORNO DO FORNECEDOR</option>
               <option>EM ANÁLISE COMPLIANCE</option>
               <option>AGUARDANDO CADASTRO SIENGE</option>
-              <option>CONCLUÍDO</option>
               <option>APROVADO</option>
               <option>REPROVADO</option>
+              <option>CADASTRADO NO SIENGE</option>
+              <option>CONCLUÍDO</option>
               <option>PENDÊNCIA</option>
             </select>
           </div>
@@ -592,26 +574,13 @@
 <div id="loading-overlay"><div class="spinner"></div><div id="loading-msg">Carregando...</div></div>
 
 <script>
-// =============================================================
-// CONFIG
-// =============================================================
 const API_URL = 'https://script.google.com/macros/s/AKfycbwFvE5sZk_crqBQ_SLT3BZ0JT6aPR13GdJIlb8XDWmf5HLehLcsmIlFsO4myY7c4sVQ/exec';
 
-// =============================================================
-// STATE
-// =============================================================
 let data = [];
 let editingId = null;
-
-// Filtros da aba Controle
-let activeFilter = { search:'', statuses:[], tipo:'', solicitante:'' };
-
-// ✅ ALTERAÇÃO 3: Filtros independentes do Pipeline
+let activeFilter   = { search:'', statuses:[], tipo:'', solicitante:'' };
 let pipelineFilter = { search:'', statuses:[], tipo:'', solicitante:'' };
 
-// =============================================================
-// DOCS LIST
-// =============================================================
 const DOCS_LIST = [
   { group:'Cadastrais', key:'ficha',            label:'Ficha Cadastral Completa' },
   { group:'Cadastrais', key:'cnpjDoc',          label:'Cartão CNPJ' },
@@ -630,34 +599,21 @@ const DOCS_LIST = [
   { group:'Certidões',  key:'cndInss',          label:'CND INSS' },
 ];
 
-// =============================================================
-// API
-// =============================================================
 async function apiFetch(action, record) {
   const res = await fetch(API_URL + '?key=allwert2026', {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify({ action, record, key: 'allwert2026' }),
-    redirect: 'follow'
+    method:'POST', headers:{'Content-Type':'text/plain'},
+    body: JSON.stringify({ action, record, key:'allwert2026' }), redirect:'follow'
   });
   return res.json();
 }
-
 async function apiLoad() {
-  const res  = await fetch(API_URL + '?key=allwert2026&ts=' + Date.now(), { redirect: 'follow' });
+  const res  = await fetch(API_URL + '?key=allwert2026&ts=' + Date.now(), { redirect:'follow' });
   const json = await res.json();
   return json.success ? json.data : null;
 }
-
-// =============================================================
-// LOADING
-// =============================================================
 function showLoading(msg) { document.getElementById('loading-overlay').style.display='flex'; document.getElementById('loading-msg').textContent=msg||'Carregando...'; }
-function hideLoading() { document.getElementById('loading-overlay').style.display='none'; }
+function hideLoading()    { document.getElementById('loading-overlay').style.display='none'; }
 
-// =============================================================
-// INIT
-// =============================================================
 async function init() {
   showLoading('Conectando ao Google Sheets...');
   try {
@@ -666,42 +622,33 @@ async function init() {
       data = remote;
       data.forEach(r => DOCS_LIST.forEach(d => { if (typeof r[d.key]==='string') r[d.key] = r[d.key]==='true'||r[d.key]==='TRUE'; }));
       showToast('✅ Conectado — ' + data.length + ' registro(s) carregado(s)');
-    } else {
-      data = [];
-      showToast('⚠️ Modo offline — verifique a conexão com o Sheets');
-    }
-  } catch(err) {
-    data = [];
-    showToast('❌ Erro ao conectar: ' + err.message);
-  }
+    } else { data = []; showToast('⚠️ Modo offline — verifique a conexão com o Sheets'); }
+  } catch(err) { data = []; showToast('❌ Erro ao conectar: ' + err.message); }
   hideLoading();
   renderAll();
 }
 
-// =============================================================
-// UTILS
-// =============================================================
 function fmtDate(d) { if (!d) return '—'; const p=String(d).split('-'); return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:String(d); }
 function calcSla(rec) {
   if (!rec.dataSolicitacao) return null;
   const start = new Date(rec.dataSolicitacao);
-  const end = rec.statusGeral==='CONCLUÍDO' && rec.dataSienge ? new Date(rec.dataSienge) : new Date();
+  const end = ['CONCLUÍDO','APROVADO','REPROVADO','CADASTRADO NO SIENGE'].includes(rec.statusGeral) && rec.dataSienge ? new Date(rec.dataSienge) : new Date();
   return Math.floor((end-start)/86400000);
 }
 function genId() { return Date.now().toString(); }
 
-// =============================================================
-// BADGES
-// =============================================================
+// ✅ ALTERAÇÃO 1: Novos status no badge mapper
 function statusBadge(s) {
-  // ✅ ALTERAÇÃO 1: "Ag. Docs" → "Aguardando Documentos"
   const map = {
-    'AGUARDANDO DOCUMENTOS FORNECEDOR': ['badge-orange','📂','Aguardando Documentos'],
-    'AGUARDANDO RETORNO DO FORNECEDOR': ['badge-teal','🔄','Ag. Retorno'],
-    'EM ANÁLISE COMPLIANCE':            ['badge-yellow','🔍','Compliance'],
-    'AGUARDANDO CADASTRO SIENGE':       ['badge-blue','⏳','Ag. Sienge'],
-    'CONCLUÍDO':                        ['badge-green','✅','Concluído'],
-    'PENDÊNCIA':                        ['badge-red','⚠️','Pendência'],
+    'AGUARDANDO DOCUMENTOS FORNECEDOR': ['badge-orange','📂','Ag. Documentos'],
+    'AGUARDANDO RETORNO DO FORNECEDOR': ['badge-teal',  '🔄','Ag. Retorno'],
+    'EM ANÁLISE COMPLIANCE':            ['badge-yellow', '🔍','Compliance'],
+    'AGUARDANDO CADASTRO SIENGE':       ['badge-blue',   '⏳','Ag. Sienge'],
+    'APROVADO':                         ['badge-green',  '✅','Aprovado'],
+    'REPROVADO':                        ['badge-red',    '❌','Reprovado'],
+    'CADASTRADO NO SIENGE':             ['badge-blue',   '🏢','Cad. Sienge'],
+    'CONCLUÍDO':                        ['badge-green',  '✅','Concluído'],
+    'PENDÊNCIA':                        ['badge-red',    '⚠️','Pendência'],
   };
   const [cls,icon,label] = map[s]||['badge-gray','❓',s];
   return `<span class="badge ${cls}">${icon} ${label}</span>`;
@@ -723,44 +670,72 @@ function checkCell(v) { return v?'<span class="check-yes">✓</span>':'<span cla
 function slaCell(d) { if (d===null||d===undefined) return '<span style="color:var(--text-muted)">—</span>'; const cls=d<=5?'sla-ok':d<=10?'sla-warn':'sla-over'; return `<span class="sla-value ${cls}">${d}d</span>`; }
 function tipoBadge(t) { const c={'Homologação':'homologacao','Cadastro':'cadastro','Due Diligence':'due-diligence'}[t]||'cadastro'; return `<span class="tipo-badge ${c}">${t}</span>`; }
 
-// =============================================================
-// STATS (usa dados completos, sem filtro)
-// =============================================================
+// ✅ ALTERAÇÃO 2: 6 KPI boxes com os novos status
 function renderStats() {
-  const total=data.length;
-  const pend=data.filter(d=>d.statusGeral==='AGUARDANDO DOCUMENTOS FORNECEDOR'||d.statusGeral==='AGUARDANDO RETORNO DO FORNECEDOR').length;
-  const comp=data.filter(d=>d.statusGeral==='EM ANÁLISE COMPLIANCE').length;
-  const conc=data.filter(d=>d.statusGeral==='CONCLUÍDO').length;
-  const risco=data.filter(d=>d.statusGeral==='PENDÊNCIA').length;
-  document.getElementById('stats-row').innerHTML=`
-    <div class="stat-card total"><div class="stat-label">Total</div><div class="stat-value">${total}</div><div class="stat-sub">Cadastros + Homologações</div></div>
-    <div class="stat-card pendente"><div class="stat-label">Aguardando Documentos</div><div class="stat-value">${pend}</div><div class="stat-sub">${total?Math.round(pend/total*100):0}%</div><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${total?pend/total*100:0}%;background:var(--yellow)"></div></div></div>
-    <div class="stat-card compliance"><div class="stat-label">Em Compliance</div><div class="stat-value">${comp}</div><div class="stat-sub">${total?Math.round(comp/total*100):0}%</div><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${total?comp/total*100:0}%;background:var(--orange)"></div></div></div>
-    <div class="stat-card concluido"><div class="stat-label">Concluídos</div><div class="stat-value">${conc}</div><div class="stat-sub">${total?Math.round(conc/total*100):0}%</div><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${total?conc/total*100:0}%"></div></div></div>
-    <div class="stat-card risco"><div class="stat-label">Pendências</div><div class="stat-value">${risco}</div><div class="stat-sub">Requerem ação</div><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${total?risco/total*100:0}%;background:var(--red)"></div></div></div>
+  const total   = data.length;
+  const agDocs  = data.filter(d => d.statusGeral==='AGUARDANDO DOCUMENTOS FORNECEDOR' || d.statusGeral==='AGUARDANDO RETORNO DO FORNECEDOR').length;
+  const comp    = data.filter(d => d.statusGeral==='EM ANÁLISE COMPLIANCE').length;
+  const aprov   = data.filter(d => d.statusGeral==='APROVADO').length;
+  const reprov  = data.filter(d => d.statusGeral==='REPROVADO').length;
+  const sienge  = data.filter(d => d.statusGeral==='CADASTRADO NO SIENGE').length;
+  const pct = (n) => total ? Math.round(n/total*100) : 0;
+
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-card total">
+      <div class="stat-label">Total</div>
+      <div class="stat-value">${total}</div>
+      <div class="stat-sub">Cadastros + Homologações</div>
+    </div>
+    <div class="stat-card pendente">
+      <div class="stat-label">Aguardando Documentos</div>
+      <div class="stat-value">${agDocs}</div>
+      <div class="stat-sub">${pct(agDocs)}%</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct(agDocs)}%;background:var(--yellow)"></div></div>
+    </div>
+    <div class="stat-card compliance">
+      <div class="stat-label">Em Compliance</div>
+      <div class="stat-value">${comp}</div>
+      <div class="stat-sub">${pct(comp)}%</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct(comp)}%;background:var(--orange)"></div></div>
+    </div>
+    <div class="stat-card aprovado">
+      <div class="stat-label">Aprovado</div>
+      <div class="stat-value">${aprov}</div>
+      <div class="stat-sub">${pct(aprov)}%</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct(aprov)}%"></div></div>
+    </div>
+    <div class="stat-card reprovado">
+      <div class="stat-label">Reprovado</div>
+      <div class="stat-value">${reprov}</div>
+      <div class="stat-sub">${pct(reprov)}%</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct(reprov)}%;background:var(--red)"></div></div>
+    </div>
+    <div class="stat-card sienge">
+      <div class="stat-label">Cadastrado no Sienge</div>
+      <div class="stat-value">${sienge}</div>
+      <div class="stat-sub">${pct(sienge)}%</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct(sienge)}%;background:#1a4a9f"></div></div>
+    </div>
   `;
 }
 
-// =============================================================
-// TABLE (aba Controle)
-// =============================================================
 function filteredData() {
   return data.filter(d => {
-    const s=activeFilter.search.toLowerCase();
-    const ms=!s||(d.fornecedor||'').toLowerCase().includes(s)||(d.cnpj||'').toLowerCase().includes(s)||(d.solicitante||'').toLowerCase().includes(s);
-    const mst = activeFilter.statuses.length === 0 || activeFilter.statuses.includes(d.statusGeral);
-    const mt=!activeFilter.tipo||d.tipo===activeFilter.tipo;
-    const msol=!activeFilter.solicitante||d.solicitante===activeFilter.solicitante;
+    const s  = activeFilter.search.toLowerCase();
+    const ms = !s||(d.fornecedor||'').toLowerCase().includes(s)||(d.cnpj||'').toLowerCase().includes(s)||(d.solicitante||'').toLowerCase().includes(s);
+    const mst  = activeFilter.statuses.length===0 || activeFilter.statuses.includes(d.statusGeral);
+    const mt   = !activeFilter.tipo       || d.tipo===activeFilter.tipo;
+    const msol = !activeFilter.solicitante|| d.solicitante===activeFilter.solicitante;
     return ms&&mst&&mt&&msol;
   });
 }
 
 function renderTable() {
-  const rows=filteredData();
-  const tbody=document.getElementById('tracker-body');
+  const rows = filteredData();
+  const tbody = document.getElementById('tracker-body');
   if (!rows.length) { tbody.innerHTML='<tr><td colspan="19"><div class="empty-state"><div class="icon">📋</div><p>Nenhum registro encontrado.</p></div></td></tr>'; return; }
-  tbody.innerHTML=rows.map(r=>{
-    const sla=calcSla(r);
+  tbody.innerHTML = rows.map(r => {
+    const sla = calcSla(r);
     return `<tr>
       <td><div class="fornecedor-name">${r.fornecedor||'—'}</div><div class="fornecedor-cnpj">${r.cnpj||''}</div></td>
       <td>${tipoBadge(r.tipo)}</td>
@@ -785,165 +760,139 @@ function renderTable() {
   }).join('');
 }
 
-function filterTable(v) { activeFilter.search=v; renderTable(); }
-function filterByTipo(v) { activeFilter.tipo=v; renderTable(); }
-function filterBySolicitante(v) { activeFilter.solicitante=v; renderTable(); }
+function filterTable(v)        { activeFilter.search=v;      renderTable(); }
+function filterByTipo(v)       { activeFilter.tipo=v;        renderTable(); }
+function filterBySolicitante(v){ activeFilter.solicitante=v; renderTable(); }
 
-// --- Multi-select Controle ---
 function toggleMultiSelect(id) {
   const dd = document.getElementById(id);
   dd.classList.toggle('open');
-  const wrapId = id === 'status-dropdown' ? 'status-wrap' : 'p-status-wrap';
+  const wrapId = id==='status-dropdown' ? 'status-wrap' : 'p-status-wrap';
   document.getElementById(wrapId).querySelector('.multi-select-btn').classList.toggle('active', dd.classList.contains('open'));
 }
 function msSelectAll(cb, type) {
-  if (type === 'status') {
-    document.querySelectorAll('#status-dropdown input[type=checkbox]:not([value=""])').forEach(b => b.checked = false);
-    activeFilter.statuses = [];
-    document.getElementById('status-label').textContent = 'Todos os status';
+  if (type==='status') {
+    document.querySelectorAll('#status-dropdown input[type=checkbox]:not([value=""])').forEach(b=>b.checked=false);
+    activeFilter.statuses=[];
+    document.getElementById('status-label').textContent='Todos os status';
     document.getElementById('status-wrap').querySelector('.multi-select-btn').classList.remove('active');
     renderTable();
   }
 }
 function msFilter(type) {
-  if (type === 'status') {
+  if (type==='status') {
     const allCb = document.querySelector('#status-dropdown input[value=""]');
     const boxes = document.querySelectorAll('#status-dropdown input[type=checkbox]:not([value=""])');
-    const checked = [...boxes].filter(b => b.checked).map(b => b.value);
+    const checked = [...boxes].filter(b=>b.checked).map(b=>b.value);
     activeFilter.statuses = checked;
-    if (allCb) allCb.checked = checked.length === 0;
-    const btn = document.getElementById('status-wrap').querySelector('.multi-select-btn');
-    const labelEl = document.getElementById('status-label');
-    _updateMsLabel(checked, btn, labelEl);
+    if (allCb) allCb.checked = checked.length===0;
+    _updateMsLabel(checked, document.getElementById('status-wrap').querySelector('.multi-select-btn'), document.getElementById('status-label'));
     renderTable();
   }
 }
-
-// ✅ ALTERAÇÃO 3: Multi-select e filtros do Pipeline
 function pMsSelectAll(cb) {
-  document.querySelectorAll('#p-status-dropdown input[type=checkbox]:not([value=""])').forEach(b => b.checked = false);
-  pipelineFilter.statuses = [];
-  document.getElementById('p-status-label').textContent = 'Todos os status';
+  document.querySelectorAll('#p-status-dropdown input[type=checkbox]:not([value=""])').forEach(b=>b.checked=false);
+  pipelineFilter.statuses=[];
+  document.getElementById('p-status-label').textContent='Todos os status';
   document.getElementById('p-status-wrap').querySelector('.multi-select-btn').classList.remove('active');
   renderPipeline();
 }
 function pMsFilter() {
   const allCb = document.querySelector('#p-status-dropdown input[value=""]');
   const boxes = document.querySelectorAll('#p-status-dropdown input[type=checkbox]:not([value=""])');
-  const checked = [...boxes].filter(b => b.checked).map(b => b.value);
+  const checked = [...boxes].filter(b=>b.checked).map(b=>b.value);
   pipelineFilter.statuses = checked;
-  if (allCb) allCb.checked = checked.length === 0;
-  const btn = document.getElementById('p-status-wrap').querySelector('.multi-select-btn');
-  const labelEl = document.getElementById('p-status-label');
-  _updateMsLabel(checked, btn, labelEl);
+  if (allCb) allCb.checked = checked.length===0;
+  _updateMsLabel(checked, document.getElementById('p-status-wrap').querySelector('.multi-select-btn'), document.getElementById('p-status-label'));
   renderPipeline();
 }
-function filterPipeline(field, value) {
-  pipelineFilter[field] = value;
-  renderPipeline();
-}
+function filterPipeline(field, value) { pipelineFilter[field]=value; renderPipeline(); }
 
-// Helper: atualiza label do multi-select
 function _updateMsLabel(checked, btn, labelEl) {
   const short = {
-    'AGUARDANDO DOCUMENTOS FORNECEDOR':'Aguardando Documentos',
+    'AGUARDANDO DOCUMENTOS FORNECEDOR':'Ag. Documentos',
     'AGUARDANDO RETORNO DO FORNECEDOR':'Ag. Retorno',
     'EM ANÁLISE COMPLIANCE':'Compliance',
     'AGUARDANDO CADASTRO SIENGE':'Ag. Sienge',
-    'CONCLUÍDO':'Concluído',
-    'PENDÊNCIA':'Pendência'
+    'APROVADO':'Aprovado','REPROVADO':'Reprovado',
+    'CADASTRADO NO SIENGE':'Cad. Sienge',
+    'CONCLUÍDO':'Concluído','PENDÊNCIA':'Pendência'
   };
-  if (checked.length === 0) {
-    labelEl.textContent = 'Todos os status';
-    btn.classList.remove('active');
-  } else if (checked.length === 1) {
-    labelEl.textContent = short[checked[0]] || checked[0];
-    btn.classList.add('active');
-  } else {
-    labelEl.textContent = `${checked.length} selecionados`;
-    btn.classList.add('active');
-  }
+  if (checked.length===0) { labelEl.textContent='Todos os status'; btn.classList.remove('active'); }
+  else if (checked.length===1) { labelEl.textContent=short[checked[0]]||checked[0]; btn.classList.add('active'); }
+  else { labelEl.textContent=`${checked.length} selecionados`; btn.classList.add('active'); }
 }
 
-// Close dropdowns on outside click
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.multi-select-wrap')) {
-    document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('open'));
-    document.querySelectorAll('.multi-select-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.multi-select-dropdown').forEach(d=>d.classList.remove('open'));
+    document.querySelectorAll('.multi-select-btn').forEach(b=>b.classList.remove('active'));
   }
 });
 
-// Popula dropdowns de solicitante (Controle + Pipeline)
 function populateSolicitantes() {
   const names=[...new Set(data.map(d=>d.solicitante).filter(Boolean))].sort();
-
-  // Controle
-  const sel=document.getElementById('filter-solicitante');
-  if (sel) {
+  ['filter-solicitante','p-filter-solicitante'].forEach(id=>{
+    const sel=document.getElementById(id);
+    if (!sel) return;
     const cur=sel.value;
-    sel.innerHTML='<option value="">Todos os solicitantes</option>'+names.map(n=>`<option value="${n}" ${n===cur?'selected':''} >${n}</option>`).join('');
-  }
-  // Pipeline
-  const psel=document.getElementById('p-filter-solicitante');
-  if (psel) {
-    const pcur=psel.value;
-    psel.innerHTML='<option value="">Todos os solicitantes</option>'+names.map(n=>`<option value="${n}" ${n===pcur?'selected':''} >${n}</option>`).join('');
-  }
+    sel.innerHTML='<option value="">Todos os solicitantes</option>'+names.map(n=>`<option value="${n}" ${n===cur?'selected':''}>${n}</option>`).join('');
+  });
 }
 
-// =============================================================
-// PIPELINE com filtros aplicados
-// =============================================================
 function pipelineFilteredData() {
   return data.filter(d => {
-    const s = pipelineFilter.search.toLowerCase();
-    const ms = !s || (d.fornecedor||'').toLowerCase().includes(s) || (d.cnpj||'').toLowerCase().includes(s) || (d.solicitante||'').toLowerCase().includes(s);
-    const mst = pipelineFilter.statuses.length === 0 || pipelineFilter.statuses.includes(d.statusGeral);
-    const mt = !pipelineFilter.tipo || d.tipo === pipelineFilter.tipo;
-    const msol = !pipelineFilter.solicitante || d.solicitante === pipelineFilter.solicitante;
-    return ms && mst && mt && msol;
+    const s  = pipelineFilter.search.toLowerCase();
+    const ms = !s||(d.fornecedor||'').toLowerCase().includes(s)||(d.cnpj||'').toLowerCase().includes(s)||(d.solicitante||'').toLowerCase().includes(s);
+    const mst  = pipelineFilter.statuses.length===0 || pipelineFilter.statuses.includes(d.statusGeral);
+    const mt   = !pipelineFilter.tipo       || d.tipo===pipelineFilter.tipo;
+    const msol = !pipelineFilter.solicitante|| d.solicitante===pipelineFilter.solicitante;
+    return ms&&mst&&mt&&msol;
   });
 }
 
 function renderPipeline() {
   document.getElementById('pipeline-date').textContent='Atualizado em '+new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-
   const filtered = pipelineFilteredData();
-
-  const cols=[
-    {key:'AGUARDANDO DOCUMENTOS FORNECEDOR',label:'Aguardando Documentos',cls:'col-docs',icon:'📂'},
-    {key:'AGUARDANDO RETORNO DO FORNECEDOR',label:'Ag. Retorno Forn.',cls:'col-docs',icon:'🔄'},
-    {key:'EM ANÁLISE COMPLIANCE',label:'Compliance',cls:'col-compliance',icon:'🔍'},
-    {key:'AGUARDANDO CADASTRO SIENGE',label:'Ag. Sienge',cls:'col-sienge',icon:'⏳'},
-    {key:'CONCLUÍDO',label:'Concluído',cls:'col-concluido',icon:'✅'},
-    {key:'PENDÊNCIA',label:'Pendência',cls:'col-pendente',icon:'⚠️'},
+  // ✅ ALTERAÇÃO 1: Colunas do pipeline incluem novos status
+  const cols = [
+    {key:'AGUARDANDO DOCUMENTOS FORNECEDOR', label:'Ag. Documentos',    cls:'col-docs',       icon:'📂'},
+    {key:'AGUARDANDO RETORNO DO FORNECEDOR', label:'Ag. Retorno Forn.', cls:'col-docs',       icon:'🔄'},
+    {key:'EM ANÁLISE COMPLIANCE',            label:'Compliance',         cls:'col-compliance', icon:'🔍'},
+    {key:'AGUARDANDO CADASTRO SIENGE',       label:'Ag. Sienge',         cls:'col-sienge',     icon:'⏳'},
+    {key:'APROVADO',                         label:'Aprovado',           cls:'col-aprovado',   icon:'✅'},
+    {key:'REPROVADO',                        label:'Reprovado',          cls:'col-reprovado',  icon:'❌'},
+    {key:'CADASTRADO NO SIENGE',             label:'Cadastrado Sienge',  cls:'col-sienge',     icon:'🏢'},
+    {key:'PENDÊNCIA',                        label:'Pendência',          cls:'col-pendente',   icon:'⚠️'},
   ];
   document.getElementById('pipeline-board').style.gridTemplateColumns='repeat('+cols.length+',1fr)';
-  document.getElementById('pipeline-board').innerHTML=cols.map(col=>{
-    const recs=filtered.filter(d=>d.statusGeral===col.key);
-    const cards=recs.length===0?'<div style="padding:10px;text-align:center;font-size:11px;color:var(--text-muted)">Nenhum</div>':recs.map(r=>{
-      const total=DOCS_LIST.length, done=DOCS_LIST.filter(d=>r[d.key]).length, pct=Math.round(done/total*100);
-      const barColor=pct===100?'var(--green-accent)':pct>=60?'var(--yellow)':'var(--orange)';
-      const groups=[...new Set(DOCS_LIST.map(d=>d.group))];
-      const checklistHTML=groups.map(g=>`<div class="pcl-group-label">${g}</div>`+DOCS_LIST.filter(d=>d.group===g).map(d=>`
-        <label class="pcl-item ${r[d.key]?'checked':''}" onclick="event.stopPropagation()">
-          <input type="checkbox" id="doc-${r.id}-${d.key}" ${r[d.key]?'checked':''} onchange="toggleDoc('${r.id}','${d.key}',event)">
-          <span>${d.label}</span>
-        </label>`).join('')).join('');
-      return `<div class="pipeline-card">
-        <div onclick="openModalEdit('${r.id}')">
-          <div class="pipeline-card-name">${r.fornecedor}</div>
-          <div class="pipeline-card-sub">${r.tipo}${r.tipoServico?' · '+r.tipoServico:''}</div>
-          <div style="margin-top:5px">${tipoBadge(r.tipo)}</div>
-        </div>
-        <div class="pcl-toggle" onclick="togglePcl('${r.id}')">
-          <span class="pcl-progress-text" id="pcl-txt-${r.id}">${done}/${total} docs</span>
-          <span class="pcl-toggle-icon" id="pcl-icon-${r.id}">▼</span>
-        </div>
-        <div class="pcl-mini-bar"><div class="pcl-mini-bar-fill" id="pcl-bar-${r.id}" style="width:${pct}%;background:${barColor}"></div></div>
-        <div class="pcl-list" id="pcl-list-${r.id}">${checklistHTML}</div>
-      </div>`;
-    }).join('');
+  document.getElementById('pipeline-board').innerHTML = cols.map(col => {
+    const recs = filtered.filter(d=>d.statusGeral===col.key);
+    const cards = recs.length===0
+      ? '<div style="padding:10px;text-align:center;font-size:11px;color:var(--text-muted)">Nenhum</div>'
+      : recs.map(r => {
+          const total=DOCS_LIST.length, done=DOCS_LIST.filter(d=>r[d.key]).length, pct=Math.round(done/total*100);
+          const barColor=pct===100?'var(--green-accent)':pct>=60?'var(--yellow)':'var(--orange)';
+          const groups=[...new Set(DOCS_LIST.map(d=>d.group))];
+          const checklistHTML=groups.map(g=>`<div class="pcl-group-label">${g}</div>`+DOCS_LIST.filter(d=>d.group===g).map(d=>`
+            <label class="pcl-item ${r[d.key]?'checked':''}" onclick="event.stopPropagation()">
+              <input type="checkbox" id="doc-${r.id}-${d.key}" ${r[d.key]?'checked':''} onchange="toggleDoc('${r.id}','${d.key}',event)">
+              <span>${d.label}</span>
+            </label>`).join('')).join('');
+          return `<div class="pipeline-card">
+            <div onclick="openModalEdit('${r.id}')">
+              <div class="pipeline-card-name">${r.fornecedor}</div>
+              <div class="pipeline-card-sub">${r.tipo}${r.tipoServico?' · '+r.tipoServico:''}</div>
+              <div style="margin-top:5px">${tipoBadge(r.tipo)}</div>
+            </div>
+            <div class="pcl-toggle" onclick="togglePcl('${r.id}')">
+              <span class="pcl-progress-text" id="pcl-txt-${r.id}">${done}/${total} docs</span>
+              <span class="pcl-toggle-icon" id="pcl-icon-${r.id}">▼</span>
+            </div>
+            <div class="pcl-mini-bar"><div class="pcl-mini-bar-fill" id="pcl-bar-${r.id}" style="width:${pct}%;background:${barColor}"></div></div>
+            <div class="pcl-list" id="pcl-list-${r.id}">${checklistHTML}</div>
+          </div>`;
+        }).join('');
     return `<div class="pipeline-col ${col.cls}"><div class="pipeline-header"><span>${col.icon} ${col.label}</span><span class="pipeline-count">${recs.length}</span></div><div class="pipeline-body">${cards}</div></div>`;
   }).join('');
 }
@@ -952,7 +901,6 @@ function togglePcl(id) {
   document.getElementById('pcl-list-'+id)?.classList.toggle('visible');
   document.getElementById('pcl-icon-'+id)?.classList.toggle('open');
 }
-
 async function toggleDoc(recId, key, e) {
   e.stopPropagation();
   const idx=data.findIndex(d=>String(d.id)===String(recId));
@@ -966,23 +914,16 @@ async function toggleDoc(recId, key, e) {
   try { await apiFetch('update',data[idx]); } catch(err) { showToast('❌ Erro ao salvar'); }
 }
 
-// =============================================================
-// CADASTRO FORM
-// =============================================================
 function showFileName(input, id) {
-  const file = input.files[0];
-  const el = document.getElementById(id);
+  const file=input.files[0], el=document.getElementById(id);
   if (!el) return;
   if (file) {
-    const sizeMB = (file.size / 1024 / 1024).toFixed(1);
-    el.textContent = `📄 ${file.name} (${sizeMB} MB)`;
-    el.style.color = file.size > 8 * 1024 * 1024 ? 'var(--red)' : 'var(--green-accent)';
-    if (file.size > 8 * 1024 * 1024) el.textContent += ' ⚠️ Arquivo muito grande (máx 8MB)';
-  } else {
-    el.textContent = '';
-  }
+    const sizeMB=(file.size/1024/1024).toFixed(1);
+    el.textContent=`📄 ${file.name} (${sizeMB} MB)`;
+    el.style.color=file.size>8*1024*1024?'var(--red)':'var(--green-accent)';
+    if (file.size>8*1024*1024) el.textContent+=' ⚠️ Arquivo muito grande (máx 8MB)';
+  } else { el.textContent=''; }
 }
-
 function clearCadastro() {
   ['c-fornecedor','c-cnpj','c-tipoServico','c-valor','c-dataSol','c-contato'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('c-tipo').value='Cadastro';
@@ -991,101 +932,74 @@ function clearCadastro() {
   ['fname-ficha','fname-cnpj','fname-contrato'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=''; });
   ['file-ficha','file-cnpj','file-contrato'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
 }
-
 function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result.split(',')[1]);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
+  return new Promise((resolve,reject)=>{ const r=new FileReader(); r.onload=()=>resolve(r.result.split(',')[1]); r.onerror=reject; r.readAsDataURL(file); });
 }
-
 async function uploadFileToDrive(file, fornecedor) {
   if (!file) return '';
-  if (file.size > 8 * 1024 * 1024) { showToast(`⚠️ ${file.name} excede 8MB — pulando upload`); return ''; }
-  const base64Data = await fileToBase64(file);
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify({ action: 'upload', fileName: file.name, mimeType: file.type || 'application/octet-stream', base64Data, fornecedor }),
-    redirect: 'follow'
-  });
-  const json = await res.json();
-  return json.success ? json.url : '';
+  if (file.size>8*1024*1024) { showToast(`⚠️ ${file.name} excede 8MB — pulando upload`); return ''; }
+  const base64Data=await fileToBase64(file);
+  const res=await fetch(API_URL,{ method:'POST', headers:{'Content-Type':'text/plain'}, body:JSON.stringify({action:'upload',fileName:file.name,mimeType:file.type||'application/octet-stream',base64Data,fornecedor}), redirect:'follow' });
+  const json=await res.json();
+  return json.success?json.url:'';
 }
-
 async function saveCadastro() {
-  const fornecedor = document.getElementById('c-fornecedor').value.trim();
+  const fornecedor=document.getElementById('c-fornecedor').value.trim();
   if (!fornecedor) { showToast('⚠️ Preencha o nome do fornecedor'); return; }
-  const btn = document.querySelector('.cadastro-card .btn-primary');
+  const btn=document.querySelector('.cadastro-card .btn-primary');
   if (btn) { btn.disabled=true; btn.textContent='⏳ Enviando arquivos...'; }
   try {
-    const fileFicha    = document.getElementById('file-ficha').files[0];
-    const fileCnpj     = document.getElementById('file-cnpj').files[0];
-    const fileContrato = document.getElementById('file-contrato').files[0];
-    if (btn) btn.textContent = '⏳ Salvando ficha cadastral...';
-    const urlFicha    = await uploadFileToDrive(fileFicha,    fornecedor);
-    if (btn) btn.textContent = '⏳ Salvando cartão CNPJ...';
-    const urlCnpj     = await uploadFileToDrive(fileCnpj,     fornecedor);
-    if (btn) btn.textContent = '⏳ Salvando contrato social...';
-    const urlContrato = await uploadFileToDrive(fileContrato, fornecedor);
-    if (btn) btn.textContent = '⏳ Registrando no Sheets...';
-    const rec = {
-      id: genId(),
-      fornecedor,
-      cnpj:           document.getElementById('c-cnpj').value,
-      tipo:           document.getElementById('c-tipo').value,
-      material:       document.getElementById('c-material').value,
-      tipoServico:    document.getElementById('c-tipoServico').value,
-      valorPrevisto:  document.getElementById('c-valor').value,
-      solicitante:    document.getElementById('c-solicitante').value,
+    const ff=document.getElementById('file-ficha').files[0];
+    const fc=document.getElementById('file-cnpj').files[0];
+    const fco=document.getElementById('file-contrato').files[0];
+    if (btn) btn.textContent='⏳ Salvando ficha...';
+    const urlFicha=await uploadFileToDrive(ff,fornecedor);
+    if (btn) btn.textContent='⏳ Salvando CNPJ...';
+    const urlCnpj=await uploadFileToDrive(fc,fornecedor);
+    if (btn) btn.textContent='⏳ Salvando contrato...';
+    const urlContrato=await uploadFileToDrive(fco,fornecedor);
+    if (btn) btn.textContent='⏳ Registrando...';
+    const rec={
+      id:genId(), fornecedor,
+      cnpj:document.getElementById('c-cnpj').value,
+      tipo:document.getElementById('c-tipo').value,
+      material:document.getElementById('c-material').value,
+      tipoServico:document.getElementById('c-tipoServico').value,
+      valorPrevisto:document.getElementById('c-valor').value,
+      solicitante:document.getElementById('c-solicitante').value,
       dataSolicitacao:document.getElementById('c-dataSol').value,
-      contato:        document.getElementById('c-contato').value,
-      statusDoc: 'Pendente',
-      statusGeral: 'AGUARDANDO DOCUMENTOS FORNECEDOR',
-      statusSienge: 'Pendente',
-      slaComp: 'NO SLA',
+      contato:document.getElementById('c-contato').value,
+      statusDoc:'Pendente', statusGeral:'AGUARDANDO DOCUMENTOS FORNECEDOR',
+      statusSienge:'Pendente', slaComp:'NO SLA',
       urlFicha, urlCnpj, urlContrato,
     };
-    const result = await apiFetch('create', rec);
-    if (result.id) rec.id = result.id;
-    data.push(rec);
-    clearCadastro();
-    renderAll();
-    const uploaded = [urlFicha && 'Ficha', urlCnpj && 'CNPJ', urlContrato && 'Contrato'].filter(Boolean);
-    showToast(uploaded.length ? `✅ Cadastrado! Arquivos no Drive: ${uploaded.join(', ')}` : '✅ Fornecedor cadastrado com sucesso!');
-    showView('controle', document.querySelectorAll('.nav-btn')[1]);
-  } catch(err) {
-    showToast('❌ Erro ao cadastrar: '+err.message);
-  } finally {
-    if (btn) { btn.disabled=false; btn.textContent='💾 Cadastrar Fornecedor'; }
-  }
+    const result=await apiFetch('create',rec);
+    if (result.id) rec.id=result.id;
+    data.push(rec); clearCadastro(); renderAll();
+    const uploaded=[urlFicha&&'Ficha',urlCnpj&&'CNPJ',urlContrato&&'Contrato'].filter(Boolean);
+    showToast(uploaded.length?`✅ Cadastrado! Drive: ${uploaded.join(', ')}`:'✅ Fornecedor cadastrado!');
+    showView('controle',document.querySelectorAll('.nav-btn')[1]);
+  } catch(err) { showToast('❌ Erro: '+err.message); }
+  finally { if (btn) { btn.disabled=false; btn.textContent='💾 Cadastrar Fornecedor'; } }
 }
 
-// =============================================================
-// MODAL EDIT
-// =============================================================
 function openModalEdit(id) {
-  editingId = id;
-  const rec = data.find(d=>String(d.id)===String(id));
+  editingId=id;
+  const rec=data.find(d=>String(d.id)===String(id));
   if (!rec) return;
-  document.getElementById('modal-title').textContent = 'Atualizar: '+rec.fornecedor;
-  document.getElementById('modal-subtitle').textContent = rec.cnpj||'';
-  const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=v||''};
-  const chk=(id,v)=>{ const el=document.getElementById(id); if(el) el.checked=!!v};
+  document.getElementById('modal-title').textContent='Atualizar: '+rec.fornecedor;
+  document.getElementById('modal-subtitle').textContent=rec.cnpj||'';
+  const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=v||''; };
+  const chk=(id,v)=>{ const el=document.getElementById(id); if(el) el.checked=!!v; };
   set('f-fornecedor',rec.fornecedor); set('f-cnpj',rec.cnpj);
   set('f-tipo',rec.tipo); set('f-material',rec.material);
   set('f-tipoServico',rec.tipoServico); set('f-valor',rec.valorPrevisto);
   set('f-solicitante',rec.solicitante); set('f-dataSol',rec.dataSolicitacao);
   set('f-contato',rec.contato);
-  const sec = document.getElementById('drive-links-section');
-  const wrap = document.getElementById('drive-links-wrap');
-  const links = [{url:rec.urlFicha,label:'📄 Ficha Cadastral'},{url:rec.urlCnpj,label:'📋 Cartão CNPJ'},{url:rec.urlContrato,label:'📝 Contrato Social'}].filter(l=>l.url);
-  if (links.length && sec && wrap) {
-    wrap.innerHTML = links.map(l=>`<a href="${l.url}" target="_blank" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:#e8f5e0;color:#2d6b00;border-radius:6px;font-size:12px;font-weight:500;text-decoration:none;border:1px solid #c0e0a0">${l.label} ↗</a>`).join('');
-    sec.style.display = 'block';
-  } else if (sec) { sec.style.display = 'none'; }
+  const sec=document.getElementById('drive-links-section'), wrap=document.getElementById('drive-links-wrap');
+  const links=[{url:rec.urlFicha,label:'📄 Ficha'},{url:rec.urlCnpj,label:'📋 CNPJ'},{url:rec.urlContrato,label:'📝 Contrato'}].filter(l=>l.url);
+  if (links.length&&sec&&wrap) { wrap.innerHTML=links.map(l=>`<a href="${l.url}" target="_blank" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:#e8f5e0;color:#2d6b00;border-radius:6px;font-size:12px;font-weight:500;text-decoration:none;border:1px solid #c0e0a0">${l.label} ↗</a>`).join(''); sec.style.display='block'; }
+  else if (sec) { sec.style.display='none'; }
   set('f-dataSolDocs',rec.dataSolDocs); set('f-dataRetornoForn',rec.dataRetornoForn);
   set('f-statusDoc',rec.statusDoc);
   DOCS_LIST.forEach(d=>chk('f-'+d.key,rec[d.key]));
@@ -1098,28 +1012,25 @@ function openModalEdit(id) {
   document.getElementById('f-slaTotal').value=sla!==null?sla+' dias':'';
   document.getElementById('modal-overlay').classList.add('open');
 }
-
 function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
-
 function readForm() {
   const g=(id)=>{ const el=document.getElementById(id); return el?el.value:''; };
   const c=(id)=>{ const el=document.getElementById(id); return el?el.checked:false; };
   return {
-    fornecedor:g('f-fornecedor'), cnpj:g('f-cnpj'), tipo:g('f-tipo'), material:g('f-material'),
-    tipoServico:g('f-tipoServico'), valorPrevisto:g('f-valor'), solicitante:g('f-solicitante'),
-    dataSolicitacao:g('f-dataSol'), contato:g('f-contato'),
-    dataSolDocs:g('f-dataSolDocs'), dataRetornoForn:g('f-dataRetornoForn'), statusDoc:g('f-statusDoc'),
-    ficha:c('f-ficha'), cnpjDoc:c('f-cnpjDoc'), contrato:c('f-contrato'),
-    certSimplificada:c('f-certSimplificada'), alvara:c('f-alvara'), rgCpfSocios:c('f-rgCpfSocios'),
-    serasa:c('f-serasa'), fgts:c('f-fgts'), cndFederal:c('f-cndFederal'), cndEstadual:c('f-cndEstadual'),
-    cndMunicipal:c('f-cndMunicipal'), cndTrt:c('f-cndTrt'), cndTrabalhista:c('f-cndTrabalhista'),
-    cndFalencia:c('f-cndFalencia'), cndInss:c('f-cndInss'),
-    dataEnvioComp:g('f-dataEnvioComp'), dataRetornoComp:g('f-dataRetornoComp'), slaComp:g('f-slaComp'),
-    dataSienge:g('f-dataSienge'), numSienge:g('f-numSienge'), statusSienge:g('f-statusSienge'),
-    statusGeral:g('f-statusGeral'), obs:g('f-obs'),
+    fornecedor:g('f-fornecedor'),cnpj:g('f-cnpj'),tipo:g('f-tipo'),material:g('f-material'),
+    tipoServico:g('f-tipoServico'),valorPrevisto:g('f-valor'),solicitante:g('f-solicitante'),
+    dataSolicitacao:g('f-dataSol'),contato:g('f-contato'),
+    dataSolDocs:g('f-dataSolDocs'),dataRetornoForn:g('f-dataRetornoForn'),statusDoc:g('f-statusDoc'),
+    ficha:c('f-ficha'),cnpjDoc:c('f-cnpjDoc'),contrato:c('f-contrato'),
+    certSimplificada:c('f-certSimplificada'),alvara:c('f-alvara'),rgCpfSocios:c('f-rgCpfSocios'),
+    serasa:c('f-serasa'),fgts:c('f-fgts'),cndFederal:c('f-cndFederal'),cndEstadual:c('f-cndEstadual'),
+    cndMunicipal:c('f-cndMunicipal'),cndTrt:c('f-cndTrt'),cndTrabalhista:c('f-cndTrabalhista'),
+    cndFalencia:c('f-cndFalencia'),cndInss:c('f-cndInss'),
+    dataEnvioComp:g('f-dataEnvioComp'),dataRetornoComp:g('f-dataRetornoComp'),slaComp:g('f-slaComp'),
+    dataSienge:g('f-dataSienge'),numSienge:g('f-numSienge'),statusSienge:g('f-statusSienge'),
+    statusGeral:g('f-statusGeral'),obs:g('f-obs'),
   };
 }
-
 async function saveRecord() {
   const rec=readForm();
   if (!rec.fornecedor.trim()) { showToast('⚠️ Preencha o nome do fornecedor'); return; }
@@ -1127,23 +1038,12 @@ async function saveRecord() {
   if (btn) { btn.disabled=true; btn.textContent='⏳ Salvando...'; }
   try {
     const idx=data.findIndex(d=>String(d.id)===String(editingId));
-    if (idx!==-1) {
-      data[idx]={...data[idx],...rec};
-      await apiFetch('update',data[idx]);
-      showToast('✅ Atualizado com sucesso!');
-    }
-    closeModal();
-    renderAll();
-  } catch(err) {
-    showToast('❌ Erro ao salvar: '+err.message);
-  } finally {
-    if (btn) { btn.disabled=false; btn.textContent='💾 Salvar'; }
-  }
+    if (idx!==-1) { data[idx]={...data[idx],...rec}; await apiFetch('update',data[idx]); showToast('✅ Atualizado!'); }
+    closeModal(); renderAll();
+  } catch(err) { showToast('❌ Erro: '+err.message); }
+  finally { if (btn) { btn.disabled=false; btn.textContent='💾 Salvar'; } }
 }
 
-// =============================================================
-// VIEWS
-// =============================================================
 function showView(name, btn) {
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -1151,23 +1051,13 @@ function showView(name, btn) {
   if (btn) btn.classList.add('active');
   if (name==='pipeline') renderPipeline();
 }
-
-// =============================================================
-// RENDER ALL
-// =============================================================
 function renderAll() { renderStats(); renderTable(); populateSolicitantes(); }
-
-// =============================================================
-// TOAST
-// =============================================================
 function showToast(msg) {
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2800);
 }
-
 document.getElementById('modal-overlay').addEventListener('click', function(e) { if(e.target===this) closeModal(); });
-
 init();
 </script>
 </body>
