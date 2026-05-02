@@ -388,12 +388,12 @@
     <table class="tracker-table" id="tracker-table">
       <thead>
         <tr>
-          <th>Fornecedor</th><th>Tipo</th><th>Solicitante</th><th>Dt Solicitação</th>
+          <th>Fornecedor</th><th>Tipo</th><th>Solicitante</th><th>Dt Solicitação</th><th>Status Geral</th>
           <th class="sd">Sol. Docs</th><th class="sd">Ficha</th><th class="sd">CNPJ</th>
           <th class="sd">Contrato</th><th class="sd">Dt Retorno Forn.</th><th class="sd">Status Doc</th>
           <th class="sc">Envio Comp.</th><th class="sc">Retorno Comp.</th><th class="sc">SLA Comp.</th>
           <th class="ss">Dt Cadastro</th><th class="ss">Nº Sienge</th><th class="ss">Status Sienge</th>
-          <th>SLA Total</th><th>Status Geral</th><th></th>
+          <th>SLA Total</th><th></th>
         </tr>
       </thead>
       <tbody id="tracker-body"></tbody>
@@ -740,6 +740,7 @@ function renderTable() {
       <td>${tipoBadge(r.tipo)}</td>
       <td style="font-size:11.5px">${r.solicitante||'—'}</td>
       <td style="font-family:var(--mono);font-size:10.5px">${fmtDate(r.dataSolicitacao)}</td>
+      <td>${statusBadge(r.statusGeral)}</td>
       <td class="sd" style="font-family:var(--mono);font-size:10.5px">${fmtDate(r.dataSolDocs)}</td>
       <td class="sd check-cell">${checkCell(r.ficha)}</td>
       <td class="sd check-cell">${checkCell(r.cnpjDoc)}</td>
@@ -753,7 +754,6 @@ function renderTable() {
       <td class="ss" style="font-family:var(--mono);font-weight:500;font-size:11px">${r.numSienge||'—'}</td>
       <td class="ss">${siengeBadge(r.statusSienge)}</td>
       <td>${slaCell(sla)}</td>
-      <td>${statusBadge(r.statusGeral)}</td>
       <td><button class="btn-edit" onclick="openModalEdit('${r.id}')">✏️ Editar</button></td>
     </tr>`;
   }).join('');
