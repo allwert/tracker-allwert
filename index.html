@@ -627,11 +627,32 @@ async function init() {
   renderAll();
 }
 
-function fmtDate(d) { if (!d) return '—'; const p=String(d).split('-'); return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:String(d); }
+function fmtDate(d) {
+  if (!d) return '—';
+  const s = String(d).trim();
+  // ISO completo vindo do Sheets: 2026-04-27T03:00:00.000Z
+  const isoMatch = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (isoMatch) return isoMatch[3] + '/' + isoMatch[2] + '/' + isoMatch[1];
+  // Formato BR já correto: 27/04/2026
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(s)) return s;
+  return '—';
+}
+function parseDate(d) {
+  if (!d) return null;
+  const s = String(d).trim();
+  // ISO completo: 2026-04-27T03:00:00.000Z — new Date() já lida bem
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return new Date(s);
+  // BR: 27/04/2026
+  const br = s.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (br) return new Date(br[3] + '-' + br[2] + '-' + br[1]);
+  return null;
+}
 function calcSla(rec) {
   if (!rec.dataSolicitacao) return null;
-  const start = new Date(rec.dataSolicitacao);
-  const end = ['CONCLUÍDO','APROVADO','REPROVADO','CADASTRADO NO SIENGE'].includes(rec.statusGeral) && rec.dataSienge ? new Date(rec.dataSienge) : new Date();
+  const start = parseDate(rec.dataSolicitacao);
+  if (!start || isNaN(start)) return null;
+  const endRaw = ['CONCLUÍDO','APROVADO','REPROVADO','CADASTRADO NO SIENGE'].includes(rec.statusGeral) && rec.dataSienge ? parseDate(rec.dataSienge) : null;
+  const end = (endRaw && !isNaN(endRaw)) ? endRaw : new Date();
   return Math.floor((end-start)/86400000);
 }
 function genId() { return Date.now().toString(); }
